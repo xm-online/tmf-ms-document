@@ -78,6 +78,8 @@ spring:
             enabled: false
     thymeleaf:
         mode: HTML
+    kafka:
+        bootstrap-servers: localhost:9092
 security:
     oauth2:
         resource:
@@ -156,3 +158,7 @@ application:
     lep:
         tenant-script-storage: XM_MS_CONFIG
         lep-resource-path-pattern: /config/tenants/{tenantName}/entity/lep/resources/**/*
+    retry:
+        max-attempts: 3
+        delay: 1000 #in milliseconds
+        multiplier: 2

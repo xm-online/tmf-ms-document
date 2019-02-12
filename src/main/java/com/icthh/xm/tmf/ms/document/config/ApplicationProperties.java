@@ -23,6 +23,7 @@ public class ApplicationProperties {
     private boolean timelinesEnabled;
 
     private final Lep lep = new Lep();
+    private final Retry retry = new Retry();
 
     private List<String> tenantIgnoredPathList = Collections.emptyList();
 
@@ -32,4 +33,14 @@ public class ApplicationProperties {
         private TenantScriptStorage tenantScriptStorage;
         private String lepResourcePathPattern;
     }
+
+    @Getter
+    @Setter
+    private static class Retry {
+        private int maxAttempts;
+        private long delay;
+        private int multiplier;
+    }
+
+
 }

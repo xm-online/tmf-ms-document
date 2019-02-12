@@ -13,24 +13,18 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
-public class DocumentMetricsConfiguration extends MetricsConfigurerAdapter {
+public class AppMetricsConfiguration extends MetricsConfigurerAdapter {
 
     private final MetricRegistry metricRegistry;
     private HikariDataSource hikariDataSource;
 
-    public DocumentMetricsConfiguration(MetricRegistry metricRegistry) {
+    public AppMetricsConfiguration(MetricRegistry metricRegistry) {
         this.metricRegistry = metricRegistry;
     }
 
     @Autowired(required = false)
     public void setHikariDataSource(HikariDataSource hikariDataSource) {
         this.hikariDataSource = hikariDataSource;
-    }
-
-    @Override
-    @Bean
-    public MetricRegistry getMetricRegistry() {
-        return metricRegistry;
     }
 
     @PostConstruct
