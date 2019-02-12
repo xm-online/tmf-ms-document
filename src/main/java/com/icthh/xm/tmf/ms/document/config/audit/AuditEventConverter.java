@@ -1,12 +1,15 @@
 package com.icthh.xm.tmf.ms.document.config.audit;
 
 import com.icthh.xm.tmf.ms.document.domain.PersistentAuditEvent;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
-
-import java.util.*;
 
 @Component
 public class AuditEventConverter {
