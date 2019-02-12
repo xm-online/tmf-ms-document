@@ -1,0 +1,35 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.icthh.xm.tmf.ms.document"
+    },
+    "jhipsterVersion": "5.3.4",
+    "applicationType": "microservice",
+    "baseName": "document",
+    "packageName": "com.icthh.xm.tmf.ms.document",
+    "packageFolder": "com/icthh/xm/tmf/ms/document",
+    "serverPort": "8713",
+    "authenticationType": "uaa",
+    "uaaBaseName": "uaa",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": "consul",
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "ZjA1YTI3ODI2MDY4MDVjN2E2YTc3MTQxMjI2ZWU3ODc3ZTI2ZTQzZWNjNTRhN2MyOGNkZGNmMmMwODZiYTY1ZTA3MWQ2MmZlZGJmY2NiZjAyMGIxMTAzYWFhZjVjMTgwMzRlNzg5MzNlOTAwMTA3ZmY0MmI1YjkwZjkwYTNmZWU=",
+    "enableTranslation": false,
+    "testFrameworks": [
+      "gatling",
+      "cucumber"
+    ],
+    "jhiPrefix": "jhi",
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
