@@ -19,7 +19,7 @@ For further instructions on how to develop with JHipster, have a look at [Using 
 [OpenAPI-Generator]() is configured for this application. You can generate API code from the `src/main/resources/swagger/api.yml` definition file by running:
 
 ```bash
-./gradlew openApiGenerate
+./gradlew openApiGenerateDocument
 ```
 
 Then implements the generated delegate classes with `@Service` classes.
