@@ -17,14 +17,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
+
     private boolean kafkaEnabled;
     private String kafkaSystemTopic;
     private String kafkaSystemQueue;
     private boolean timelinesEnabled;
+    private String dbSchemaSuffix;
+    private int retryThreadCount;
 
     private final Lep lep = new Lep();
     private final Retry retry = new Retry();
-
     private List<String> tenantIgnoredPathList = Collections.emptyList();
 
     @Getter

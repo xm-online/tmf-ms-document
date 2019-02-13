@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -88,5 +89,32 @@ public class PersistentAuditEvent implements Serializable {
 
     public void setData(Map<String, String> data) {
         this.data = data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        PersistentAuditEvent persistentAuditEvent = (PersistentAuditEvent) o;
+        return !(persistentAuditEvent.getId() == null || getId() == null) && Objects.equals(getId(), persistentAuditEvent.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "PersistentAuditEvent{" +
+            "principal='" + principal + '\'' +
+            ", auditEventDate=" + auditEventDate +
+            ", auditEventType='" + auditEventType + '\'' +
+            '}';
     }
 }

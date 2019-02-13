@@ -3,7 +3,7 @@ services:
     document-app:
         image: document
         environment:
-            # - _JAVA_OPTIONS=-Xmx512m -Xms256m
+            - _JAVA_OPTIONS=-Xmx512m -Xms256m
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - SPRING_CLOUD_CONSUL_HOST=consul
             - SPRING_CLOUD_CONSUL_PORT=8500
@@ -14,7 +14,7 @@ services:
             file: postgresql.yml
             service: document-postgresql
     consul:
-        image: consul:1.2.3
+        image: consul:1.4.0
         command: consul agent -dev -ui -client 0.0.0.0
         ports:
             - 8300:8300

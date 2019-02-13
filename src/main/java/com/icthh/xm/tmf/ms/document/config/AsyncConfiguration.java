@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 @Configuration
@@ -57,4 +58,11 @@ public class AsyncConfiguration implements AsyncConfigurer, SchedulingConfigurer
         return Executors.newScheduledThreadPool(jHipsterProperties.getAsync().getCorePoolSize());
     }
 
+    @Bean
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler(ApplicationProperties applicationProperties) {
+        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(applicationProperties.getRetryThreadCount());
+        threadPoolTaskScheduler.setThreadNamePrefix("document-retry");
+        return threadPoolTaskScheduler;
+    }
 }

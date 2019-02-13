@@ -12,9 +12,13 @@ ADD entrypoint.sh entrypoint.sh
 RUN chmod 755 entrypoint.sh && chown jhipster:jhipster entrypoint.sh
 USER jhipster
 
-ADD *.war app.war
-
 ENTRYPOINT ["./entrypoint.sh"]
 
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends --no-install-suggests zip unzip \
+        && rm -rf /var/lib/apt/lists/*
+
 EXPOSE 8713
+
+ADD *.war app.war
 
