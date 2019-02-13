@@ -16,9 +16,9 @@ public class WebMvcConfiguration extends XmWebMvcConfigurerAdapter {
     private final ApplicationProperties appProps;
 
     protected WebMvcConfiguration(LepInterceptor lepInterceptor,
-        TenantInterceptor tenantInterceptor,
-        XmLoggingInterceptor xmLoggingInterceptor,
-        ApplicationProperties appProps) {
+                                  TenantInterceptor tenantInterceptor,
+                                  XmLoggingInterceptor xmLoggingInterceptor,
+                                  ApplicationProperties appProps) {
         super(tenantInterceptor, xmLoggingInterceptor);
         this.lepInterceptor = lepInterceptor;
         this.appProps = appProps;

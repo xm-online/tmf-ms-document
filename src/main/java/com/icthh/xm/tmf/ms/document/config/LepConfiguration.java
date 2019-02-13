@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 
 @Configuration
-@EnableLepServices(basePackages = "your.base.package.with.services")
+@EnableLepServices(basePackages = "com.icthh.xm.tmf.ms.document")
 public class LepConfiguration extends WebLepSpringConfiguration {
 
     @Value("${application.lep.tenant-script-storage}")
     private TenantScriptStorage tenantScriptStorageType;
 
     public LepConfiguration(@Value("${spring.application.name}") String appName,
-        ApplicationEventPublisher eventPublisher,
-        ResourceLoader resourceLoader) {
+                            ApplicationEventPublisher eventPublisher,
+                            ResourceLoader resourceLoader) {
         super(appName, eventPublisher, resourceLoader);
     }
 

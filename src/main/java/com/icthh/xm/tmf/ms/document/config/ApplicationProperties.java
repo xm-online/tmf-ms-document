@@ -44,5 +44,4 @@ public class ApplicationProperties {
         private int multiplier;
     }
 
-
 }
