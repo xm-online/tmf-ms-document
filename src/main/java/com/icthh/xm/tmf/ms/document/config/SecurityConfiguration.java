@@ -45,7 +45,8 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()
-            .antMatchers("/management/**").hasAuthority(RoleConstant.SUPER_ADMIN);
+            .antMatchers("/management/**").hasAuthority(RoleConstant.SUPER_ADMIN)
+            .antMatchers("/swagger-resources/configuration/ui").permitAll();
     }
 
     @Bean
@@ -67,13 +68,14 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
     }
 
     @Bean
-    public ConfigSignatureVerifierClient configSignatureVerifierClient(@Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate) {
-        return new ConfigSignatureVerifierClient(oAuth2Properties, restTemplate);
-    }
-
-    @Bean
     @Qualifier("vanillaRestTemplate")
     public RestTemplate vanillaRestTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public ConfigSignatureVerifierClient configSignatureVerifierClient(
+        @Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate) {
+        return new ConfigSignatureVerifierClient(oAuth2Properties, restTemplate);
     }
 }

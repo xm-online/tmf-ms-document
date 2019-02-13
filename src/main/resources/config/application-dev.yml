@@ -20,6 +20,8 @@ logging:
         com.icthh.xm.tmf.ms.document: DEBUG
 
 spring:
+    kafka:
+        bootstrap-servers: localhost:9093
     profiles:
         active: dev
         include:
@@ -29,10 +31,12 @@ spring:
     devtools:
         restart:
             enabled: true
+            additional-exclude: .h2.server.properties
         livereload:
             enabled: false # we use Webpack dev server + BrowserSync for livereload
     jackson:
-        serialization.indent_output: true
+        serialization:
+            indent-output: true
     cloud:
         consul:
             discovery:
@@ -70,14 +74,16 @@ spring:
         cache-duration: PT1S # 1 second, see the ISO 8601 standard
     thymeleaf:
         cache: false
+    sleuth:
+        sampler:
+            probability: 1 # report 100% of traces
     zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
         base-url: http://localhost:9411
         enabled: false
         locator:
             discovery:
                 enabled: true
-    kafka:
-        bootstrap-servers: localhost:9093
+
 server:
     port: 8713
 
@@ -111,6 +117,8 @@ jhipster:
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx:
             enabled: true
+        prometheus:
+            enabled: false #expose metrics via prometheus
         logs: # Reports Dropwizard metrics in the logs
             enabled: false
             report-frequency: 60 # in seconds

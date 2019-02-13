@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "com.icthh.xm.tmf.ms.document"
     },
-    "jhipsterVersion": "5.3.4",
+    "jhipsterVersion": "5.7.2",
     "applicationType": "microservice",
     "baseName": "document",
     "packageName": "com.icthh.xm.tmf.ms.document",
@@ -21,13 +21,14 @@
     "serviceDiscoveryType": "consul",
     "buildTool": "gradle",
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "ZjA1YTI3ODI2MDY4MDVjN2E2YTc3MTQxMjI2ZWU3ODc3ZTI2ZTQzZWNjNTRhN2MyOGNkZGNmMmMwODZiYTY1ZTA3MWQ2MmZlZGJmY2NiZjAyMGIxMTAzYWFhZjVjMTgwMzRlNzg5MzNlOTAwMTA3ZmY0MmI1YjkwZjkwYTNmZWU=",
-    "enableTranslation": false,
+    "jwtSecretKey": "YWEwZjNjMzg0YmZiMDg2ZmU2NTlkOTRmYThkNjA0ZjA3ODkxZjAxMzVmOGI1NmYwYThmNGNkMTgwZGMxMGRjZWFjMGNhYTk0MjY3NzIyZjkzOTkwODY4YzhkM2RhNTE5N2VmNDNkNGFiMjFmMDA4YTRjYTU3MzJlMzY3NzNmZDM=",
     "testFrameworks": [
       "gatling",
       "cucumber"
     ],
     "jhiPrefix": "jhi",
+    "otherModules": [],
+    "enableTranslation": false,
     "clientPackageManager": "npm",
     "skipClient": true,
     "skipUserManagement": true

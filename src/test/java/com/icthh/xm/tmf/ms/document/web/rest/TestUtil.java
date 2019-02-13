@@ -19,12 +19,22 @@ import org.springframework.http.MediaType;
 /**
  * Utility class for testing REST controllers.
  */
-public class TestUtil {
+public final class TestUtil {
+
+    private static final ObjectMapper mapper = createObjectMapper();
 
     /** MediaType for JSON UTF8 */
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
             MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
+
+
+    private static ObjectMapper createObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        mapper.registerModule(new JavaTimeModule());
+        return mapper;
+    }
 
     /**
      * Convert an object to JSON byte array.
@@ -36,12 +46,6 @@ public class TestUtil {
      */
     public static byte[] convertObjectToJsonBytes(Object object)
             throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-
-        JavaTimeModule module = new JavaTimeModule();
-        mapper.registerModule(module);
-
         return mapper.writeValueAsBytes(object);
     }
 
@@ -131,4 +135,6 @@ public class TestUtil {
         registrar.registerFormatters(dfcs);
         return dfcs;
     }
+
+    private TestUtil() {}
 }
