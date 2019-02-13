@@ -1,0 +1,39 @@
+/*
+ * Plugin that provides API-first development using OpenAPI-generator to
+ * generate Spring-MVC endpoint stubs at compile time from an OpenAPI definition file
+ */
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.1"
+    }
+}
+
+apply plugin: 'org.openapi.generator'
+
+task openApiGenerateDocument(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask){
+    generatorName = "spring"
+    inputSpec = "$rootDir/src/main/resources/swagger/api.yml".toString()
+    outputDir = "$buildDir/openapi".toString()
+    apiPackage = "com.icthh.xm.tmf.ms.document.web.api"
+    modelPackage = "com.icthh.xm.tmf.ms.document.web.api.model"
+    apiFilesConstrainedTo = [""]
+    modelFilesConstrainedTo = [""]
+    supportingFilesConstrainedTo = ["ApiUtil.java"]
+    configOptions = [delegatePattern: "true"]
+    validateSpec = true
+}
+
+task allOpenApiGenerate(dependsOn: ['openApiGenerateDocument'])
+
+sourceSets {
+    main {
+        java {
+            srcDir file("${project.buildDir.path}/openapi/src/main/java")
+        }
+    }
+}
+
+compileJava.dependsOn("allOpenApiGenerate")
