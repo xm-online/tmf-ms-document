@@ -79,8 +79,7 @@ bootWar {
 }
 
 war {
-    enabled = true
-    classifier = 'original'
+    
 }
 
 springBoot {
