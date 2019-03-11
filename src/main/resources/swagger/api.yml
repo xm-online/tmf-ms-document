@@ -4,7 +4,7 @@ info:
     description: This is Swagger UI environment generated for the TMF Document Management specification
     version: '2.0'
 host: biologeek.orange-labs.fr
-basePath: /tmf-api/documentManagement
+basePath: /api/documentManagement
 schemes:
     - https
 consumes:
