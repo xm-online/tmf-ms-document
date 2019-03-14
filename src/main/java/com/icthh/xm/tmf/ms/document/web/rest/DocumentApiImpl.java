@@ -8,14 +8,12 @@ import com.icthh.xm.commons.lep.spring.LepService;
 import com.icthh.xm.tmf.ms.document.web.api.DocumentApiDelegate;
 import com.icthh.xm.tmf.ms.document.web.api.model.Document;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component
 @LepService(group = "service")
-@RequiredArgsConstructor
 public class DocumentApiImpl implements DocumentApiDelegate {
 
     @PreAuthorize("hasPermission({}, 'DOCUMENT.RETRIEVE')")
