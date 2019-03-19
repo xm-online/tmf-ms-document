@@ -246,9 +246,9 @@ paths:
                     description: Internal Server Error
                     schema:
                         $ref: '#/definitions/Error'
-    '/document/{id}.pdf':
+    '/binaryDocument/{id}':
         get:
-            operationId: retrieveDocumentPdf
+            operationId: retrieveBinaryDocument
             summary: Retrieves a 'Document' by Id
             tags:
                 - document
@@ -258,8 +258,6 @@ paths:
                   name: id
                   in: path
                   description: Identifier of the Document
-            produces:
-                - application/pdf
             responses:
                 '200':
                     description: Ok
