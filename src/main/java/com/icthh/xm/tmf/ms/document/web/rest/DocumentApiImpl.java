@@ -1,26 +1,23 @@
 package com.icthh.xm.tmf.ms.document.web.rest;
 
-import static java.util.Collections.emptyList;
-
 import com.codahale.metrics.annotation.Timed;
 import com.icthh.xm.commons.lep.LogicExtensionPoint;
 import com.icthh.xm.commons.lep.spring.LepService;
-import com.icthh.xm.tmf.ms.document.web.api.DocumentApiDelegate;
-import com.icthh.xm.tmf.ms.document.web.api.model.Document;
-import java.util.List;
+import com.icthh.xm.tmf.ms.document.web.api.BinaryDocumentApiDelegate;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component
 @LepService(group = "service")
-public class DocumentApiImpl implements DocumentApiDelegate {
+public class DocumentApiImpl implements BinaryDocumentApiDelegate {
 
-    @PreAuthorize("hasPermission({}, 'DOCUMENT.RETRIEVE')")
+    @PreAuthorize("hasPermission({}, 'DOCUMENT.RETRIEVE.BINARY')")
     @Timed
-    @LogicExtensionPoint("Retrieve")
+    @LogicExtensionPoint("RetrieveBinary")
     @Override
-    public ResponseEntity<List<Document>> retrieveDocument(String id) {
-        return ResponseEntity.ok(emptyList());
+    public ResponseEntity<Resource> retrieveBinaryDocument(String id) {
+        return null;
     }
 }

@@ -246,6 +246,35 @@ paths:
                     description: Internal Server Error
                     schema:
                         $ref: '#/definitions/Error'
+    '/binaryDocument/{id}':
+        get:
+            operationId: retrieveBinaryDocument
+            summary: Retrieves a 'Document' by Id
+            tags:
+                - document
+            parameters:
+                - required: true
+                  type: string
+                  name: id
+                  in: path
+                  description: Identifier of the Document
+            responses:
+                '200':
+                    description: Ok
+                    schema:
+                        type: file
+                '400':
+                    description: Bad Request
+                    schema:
+                        $ref: '#/definitions/Error'
+                '404':
+                    description: Not Found
+                    schema:
+                        $ref: '#/definitions/Error'
+                '500':
+                    description: Internal Server Error
+                    schema:
+                        $ref: '#/definitions/Error'
     /hub:
         post:
             operationId: registerListener
