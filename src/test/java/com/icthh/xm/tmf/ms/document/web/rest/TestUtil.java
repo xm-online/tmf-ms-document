@@ -5,12 +5,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
@@ -19,6 +27,8 @@ import org.springframework.http.MediaType;
 /**
  * Utility class for testing REST controllers.
  */
+@UtilityClass
+@Slf4j
 public final class TestUtil {
 
     private static final ObjectMapper mapper = createObjectMapper();
@@ -136,5 +146,34 @@ public final class TestUtil {
         return dfcs;
     }
 
-    private TestUtil() {}
+    public static String resourceFileAsString(String resourceFilePath) {
+        try {
+            InputStream specFileInputStream = new ClassPathResource(resourceFilePath).getInputStream();
+            return IOUtils.toString(specFileInputStream, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    /**
+     * Write bytes to file (see in the 'build/resources' directory).
+     *
+     * @param fileBytes bytes of the file
+     * @param directoryPath existing resource directory
+     * @param fullFilename filename with extension
+     * @return whether the file has been successfully written
+     */
+    public static boolean writeFileToBuildResource(byte[] fileBytes, String directoryPath,
+        String fullFilename) {
+        try {
+            ClassPathResource classPathResource = new ClassPathResource(directoryPath);
+            File templateFile = classPathResource.getFile().toPath()
+                .toAbsolutePath().resolve(fullFilename).toFile();
+            FileUtils.writeByteArrayToFile(templateFile, fileBytes);
+            return true;
+        } catch (IOException e) {
+            log.error("Failed to write the file to resource", e);
+            return false;
+        }
+    }
 }
