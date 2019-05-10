@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import javax.annotation.Nullable;
 import lombok.experimental.UtilityClass;
 
+@SuppressWarnings("unused")
 @UtilityClass
 public class DocumentContextMappingUtils {
 
