@@ -1,9 +1,10 @@
 package com.icthh.xm.tmf.ms.document.service.converter;
 
+import static com.icthh.xm.tmf.ms.document.web.rest.util.MediaTypeUtil.parseMediaType;
+
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Converter;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 
 /**
@@ -13,10 +14,7 @@ public class MediaTypeConverter implements Converter<String, MediaType> {
 
     @Override
     public MediaType convert(String value) {
-        if (StringUtils.isBlank(value)) {
-            return null;
-        }
-        return MediaType.parseMediaType(value);
+        return parseMediaType(value);
     }
 
     @Override
