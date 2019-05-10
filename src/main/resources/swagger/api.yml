@@ -275,6 +275,9 @@ paths:
                     description: Internal Server Error
                     schema:
                         $ref: '#/definitions/Error'
+    /binaryDocument/genearte:
+        post:
+            # TODO describe request as in DocumentGenerationResource and ref to GenerateDocumentRequest in definitions below
     /hub:
         post:
             operationId: registerListener
@@ -327,6 +330,7 @@ paths:
                     schema:
                         $ref: '#/definitions/Error'
 definitions:
+    # TODO - add com.icthh.xm.tmf.ms.document.web.rest.DocumentGenerationResource.GenerateDocumentRequest model here
     Document:
         type: object
         description: Document is a tangible output from an activity
