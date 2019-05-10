@@ -1,4 +1,4 @@
 {
-    "назва": "Назва документу",
-    "опис": "Опис документу"
+    "name": "Document name",
+    "description": "Document description"
 }

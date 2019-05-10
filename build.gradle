@@ -290,7 +290,6 @@ dependencies {
     compile ("net.sf.jasperreports:jasperreports:${jasperreports_version}") {
         exclude group: 'com.lowagie', module: 'itext'
     }
-    compile files('lib/timesnewroman-cyrillic-font.jar')
 
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
     annotationProcessor "org.hibernate:hibernate-jpamodelgen"

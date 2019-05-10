@@ -5,11 +5,11 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="назва" class="java.lang.String">
-		<fieldDescription><![CDATA[назва]]></fieldDescription>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
 	</field>
-	<field name="опис" class="java.lang.String">
-		<fieldDescription><![CDATA[опис]]></fieldDescription>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[description]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -30,28 +30,28 @@
 				<textElement>
 					<font fontName="Times New Roman" size="16"/>
 				</textElement>
-				<text><![CDATA[Назва:]]></text>
+				<text><![CDATA[Name:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="10" width="300" height="20" uuid="237abae7-d919-4d6f-a0e8-ccf1e6814291"/>
 				<textElement>
 					<font fontName="Times New Roman" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{назва}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="80" y="40" width="50" height="20" uuid="be01c619-9f9c-47d4-ada9-1642df79b211"/>
 				<textElement>
 					<font fontName="Times New Roman" size="16"/>
 				</textElement>
-				<text><![CDATA[Опис:]]></text>
+				<text><![CDATA[Description:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="40" width="300" height="20" uuid="5df70314-98f4-44b2-a2dd-4bd403696e3a"/>
 				<textElement>
 					<font fontName="Times New Roman" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{опис}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
