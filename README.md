@@ -114,18 +114,18 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 ```
 <TENANT>
 ├── document
-│   ├── documents.yml
+│   ├── documents.yml -> document specifications config file
 │   ├── lep
 │   │   └── mapper
-│   │       └── DocumentContextMapping$$TEST_DOCUMENT$$around.groovy
+│   │       └── DocumentContextMapping$$TEST_DOCUMENT$$around.groovy -> document context mapping LEP
 │   └── templates
 │       └── jasper
-│           └── test_document.jrxml
+│           └── test_document.jrxml -> JasperReports template
 ```
 
 To generates document, describe document specification in the YAML file (_documents.yml_):
 Example:
-```
+```yaml
 TEST_DOCUMENT:
   allowedDocumentMimeTypes: [application/pdf, text/xml]
   defaultDocumentMimeType: application/pdf
@@ -149,7 +149,7 @@ where:
     * script name format: `DocumentContextMapping$${DOCUMENT_KEY}$$around.groovy` 
         - where _{DOCUMENT_KEY}_ - key of the document specification
         
-    Mapping script example:
+    **Mapping script example:**
     ```groovy
     import static com.icthh.xm.tmf.ms.document.service.generation.util.DocumentContextMappingUtils.joinNullSafe
     
@@ -171,7 +171,32 @@ where:
     This example shows how you can create a simple map with friendly field names as keys 
     from a complex document context object. Further this map will be passed to Jasper template 
     where you can declare fields by map's keys (ex. _$F{назва}_).
+4. Generate documents by REST endpoint: 
+    
+    `POST /api/documentManagement/binaryDocument/generate`
 
+    **Request body:**
+    ```json
+    {
+        "key": "TEST_DOCUMENT",
+        "documentContext": {
+            "article": {
+                "name": "Назва статті",
+                "first": "перша частина опису",
+                "second": "друга частина опису"
+            }
+        },
+        "documentMimeType": "application/pdf"
+    }
+    ```
+    where:
+    * `key` - document specification key
+    * `documentContext` - arbitrary document context
+    * (Optional) `documentMimeType` - document mime type
+    
+    **Response:** document file with expected mime type and with document specification key 
+    in lower case as a filename (e.g. key = _TEST_DOCUMENT_ - filename = _test_document_)
+    
 **FONTS ISSUE:**
 There are several fonts that can be used in documents for all environments, see [Default Fonts in JasperReports](https://community.jaspersoft.com/documentation/jasperreports-server-user-guide/using-default-fonts-jasperreports-server).
 For other fonts you need to explicitly add them to classpath of the application:
