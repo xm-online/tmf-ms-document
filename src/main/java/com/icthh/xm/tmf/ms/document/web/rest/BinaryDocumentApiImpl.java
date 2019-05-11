@@ -32,7 +32,7 @@ public class BinaryDocumentApiImpl implements BinaryDocumentApiDelegate {
         return null;
     }
 
-    @PreAuthorize("hasPermission({}, 'DOCUMENT.GENERATE.BINARY')")
+    @PreAuthorize("hasPermission({'documentGenerate': #documentGenerate}, 'DOCUMENT.GENERATE.BINARY')")
     @Timed
     @Override
     public ResponseEntity<Resource> generateBinaryDocument(DocumentGenerate documentGenerate) {

@@ -51,7 +51,7 @@ public class JasperReportsDocumentRenderer implements DocumentRenderer {
         } catch (JRException e) {
             String msg = String.format("Failed to render document with key '%s'", key);
             log.error(msg, e);
-            throw new DocumentRenderingException(msg + ". " + e.getMessage());
+            throw new DocumentRenderingException(msg + ". " + e.getMessage(), e);
         }
     }
 

@@ -1,9 +1,10 @@
 package com.icthh.xm.tmf.ms.document.service.generation;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,15 +34,8 @@ public class DocumentRendererFactory {
     }
 
     private Map<DocumentRendererType, DocumentRenderer> buildRendererMap(List<DocumentRenderer> documentRenderers) {
-        Builder<DocumentRendererType, DocumentRenderer> mapBuilder = ImmutableMap.builder();
-        DocumentRendererType[] types = DocumentRendererType.values();
-        for (DocumentRendererType type : types) {
-            for (DocumentRenderer renderer : documentRenderers) {
-                if (type.equals(renderer.getType())) {
-                    mapBuilder.put(type, renderer);
-                }
-            }
-        }
-        return mapBuilder.build();
+        Map<DocumentRendererType, DocumentRenderer> renderersByTypeMap = documentRenderers.stream()
+            .collect(Collectors.toMap(DocumentRenderer::getType, Function.identity()));
+        return Collections.unmodifiableMap(renderersByTypeMap);
     }
 }
