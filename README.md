@@ -110,6 +110,19 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 
 ## Document generation
 
+### MS config document folder structure
+```
+<TENANT>
+├── document
+│   ├── documents.yml
+│   ├── lep
+│   │   └── mapper
+│   │       └── DocumentContextMapping$$TEST_DOCUMENT$$around.groovy
+│   └── templates
+│       └── jasper
+│           └── test_document.jrxml
+```
+
 To generates document, describe document specification in the YAML file (_documents.yml_):
 Example:
 ```
