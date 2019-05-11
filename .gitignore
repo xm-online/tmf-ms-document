@@ -142,8 +142,3 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
-
-######################
-# Exclusions
-######################
-!lib/*.jar
