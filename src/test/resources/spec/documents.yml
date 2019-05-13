@@ -1,0 +1,5 @@
+---
+TEST_DOCUMENT:
+    allowedDocumentMimeTypes: [application/pdf, text/xml]
+    defaultDocumentMimeType: application/pdf
+    renderer: JASPER_REPORTS

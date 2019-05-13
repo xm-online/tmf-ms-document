@@ -205,6 +205,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
+    maven { url "http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" }
     //jhipster-needle-gradle-repositories - JHipster will add additional repositories
 }
 
@@ -285,7 +286,10 @@ dependencies {
     compile "com.icthh.xm.commons:xm-commons-lep:${xm_commons_version}"
     compile "com.icthh.xm.commons:xm-commons-timeline:${xm_commons_version}"
     compile "com.icthh.xm.commons:xm-commons-metric:${xm_commons_version}"
- 
+
+    compile "net.sf.jasperreports:jasperreports:${jasperreports_version}"
+    compile "net.sf.jasperreports:jasperreports-fonts:${jasperreports_version}"
+
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
     annotationProcessor "org.hibernate:hibernate-jpamodelgen"
     annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {

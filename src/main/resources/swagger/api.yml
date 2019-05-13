@@ -275,6 +275,30 @@ paths:
                     description: Internal Server Error
                     schema:
                         $ref: '#/definitions/Error'
+    '/binaryDocument/generate':
+        post:
+            operationId: generateBinaryDocument
+            summary: Generate a binary document
+            parameters:
+                - schema:
+                      $ref: '#/definitions/Document_Generate'
+                  required: true
+                  in: body
+                  name: documentGenerate
+                  description: The request for document generation
+            responses:
+                '200':
+                    description: Ok
+                    schema:
+                        type: file
+                '400':
+                    description: Bad Request
+                    schema:
+                        $ref: '#/definitions/Error'
+                '500':
+                    description: Internal Server Error
+                    schema:
+                        $ref: '#/definitions/Error'
     /hub:
         post:
             operationId: registerListener
@@ -656,3 +680,18 @@ definitions:
             infoURL:
                 type: string
                 description: (optional) A URL to online documentation that provides more information about the error.
+    Document_Generate:
+        type: object
+        required:
+            - key
+            - documentContext
+        properties:
+            key:
+                type: string
+                description: Key of the document specification
+            documentContext:
+                type: object
+                description: Document context
+            documentMimeType:
+                type: string
+                description: Document result mime type

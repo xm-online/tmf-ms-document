@@ -42,4 +42,11 @@ public final class HeaderUtil {
         headers.add("X-" + APPLICATION_NAME + "-params", entityName);
         return headers;
     }
+
+    public static HttpHeaders createAttachmentHeaders(String filename, String contentType) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, contentType);
+        httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
+        return httpHeaders;
+    }
 }

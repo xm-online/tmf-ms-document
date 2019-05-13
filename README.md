@@ -107,3 +107,100 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [openapi-generator]: https://openapi-generator.tech
 [swagger-editor]: http://editor.swagger.io
 [doing api-first development]: https://www.jhipster.tech/documentation-archive/v5.7.2/doing-api-first-development/
+
+## Document generation
+
+### MS config document folder structure
+```
+<TENANT>
+├── document
+│   ├── documents.yml -> document specifications config file
+│   ├── lep
+│   │   └── mapper
+│   │       └── DocumentContextMapping$$TEST_DOCUMENT$$around.groovy -> document context mapping LEP
+│   └── templates
+│       └── jasper
+│           └── test_document.jrxml -> JasperReports template
+```
+
+To generates document, describe document specification in the YAML file (_documents.yml_):
+Example:
+```yaml
+TEST_DOCUMENT:
+  allowedDocumentMimeTypes: [application/pdf, text/xml]
+  defaultDocumentMimeType: application/pdf
+  renderer: JASPER_REPORTS
+```
+where:
+* `TEST_DOCUMENT` - unique key of the document specification used to specify which type of a document to generate
+* `allowedDocumentMimeTypes` - list of the allowed document formats specified as MIME types (_application/pdf, text/xml etc._)
+* `defaultDocumentMimeType` - default document format to use if no is specified
+* `renderer` - type of the renderer to use for document generation. Currently available (with supported mime types): 
+    * JASPER_REPORTS (_application/pdf_, _application/xml_)
+
+### How to generate documents with [JasperReports](https://community.jaspersoft.com/project/jasperreports-library)
+
+1. Describe document specification in the documents YAML file with `renderer: JASPER_REPORTS`
+2. Add JasperReports `.jrxml` file to `templates/jasper` with document specification key in lower case as a filename (e.g. key = _TEST_DOCUMENT_ - file = _test_document.jrxml_).
+
+    You can create and edit JasperReports template with [Jaspersoft Studio](https://community.jaspersoft.com/project/jaspersoft-studio)
+3. (Optional) Add LEP script for mapping input document context to renderer specific model:
+    * location: `lep/mapper`
+    * script name format: `DocumentContextMapping$${DOCUMENT_KEY}$$around.groovy` 
+        - where _{DOCUMENT_KEY}_ - key of the document specification
+        
+    **Mapping script example:**
+    ```groovy
+    import static com.icthh.xm.tmf.ms.document.service.generation.util.DocumentContextMappingUtils.joinNullSafe
+    
+    def context = lepContext.inArgs.context
+    
+    Map<String, Closure> mappingFunctions = [
+            'назва': { ctx ->
+                ctx.article.name
+            },
+            'опис' : { ctx ->
+                joinNullSafe(', ', ctx.article.first, ctx.article.second)
+            }
+    ]
+    
+    return mappingFunctions.collectEntries(new HashMap<String, String>(), {
+        field, func -> [field, func(context)]
+    })
+    ```
+    This example shows how you can create a simple map with friendly field names as keys 
+    from a complex document context object. Further this map will be passed to Jasper template 
+    where you can declare fields by map's keys (ex. _$F{назва}_).
+4. Generate documents by REST endpoint: 
+    
+    `POST /api/documentManagement/binaryDocument/generate`
+
+    **Request body:**
+    ```json
+    {
+        "key": "TEST_DOCUMENT",
+        "documentContext": {
+            "article": {
+                "name": "Назва статті",
+                "first": "перша частина опису",
+                "second": "друга частина опису"
+            }
+        },
+        "documentMimeType": "application/pdf"
+    }
+    ```
+    where:
+    * `key` - document specification key
+    * `documentContext` - arbitrary document context
+    * (Optional) `documentMimeType` - document mime type
+    
+    **Response:** document file with expected mime type and with document specification key 
+    in lower case as a filename (e.g. key = _TEST_DOCUMENT_ - filename = _test_document_)
+    
+**FONTS ISSUE:**
+There are several fonts that can be used in documents for all environments, see [Default Fonts in JasperReports](https://community.jaspersoft.com/documentation/jasperreports-server-user-guide/using-default-fonts-jasperreports-server).
+For other fonts you need to explicitly add them to classpath of the application:
+1. Find required fonts.
+2. Export them as `.jar` via [Jaspersoft Studio](https://community.jaspersoft.com/documentation/tibco-jaspersoft-studio-user-guide/v640/working-font-extensions).
+3. Add jar file to classpath of the application.
+4. Now you can use them in your documents.

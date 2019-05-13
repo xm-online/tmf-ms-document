@@ -28,6 +28,7 @@ public class ApplicationProperties {
     private final Lep lep = new Lep();
     private final Retry retry = new Retry();
     private List<String> tenantIgnoredPathList = Collections.emptyList();
+    private final DocumentGeneration documentGeneration = new DocumentGeneration();
 
     @Getter
     @Setter
@@ -42,6 +43,13 @@ public class ApplicationProperties {
         private int maxAttempts;
         private long delay;
         private int multiplier;
+    }
+
+    @Getter
+    @Setter
+    public static class DocumentGeneration {
+        private String specificationPathPattern;
+        private String jasperTemplatesPathPattern;
     }
 
 }
