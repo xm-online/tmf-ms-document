@@ -203,4 +203,4 @@ For other fonts you need to explicitly add them to classpath of the application:
 1. Find required fonts.
 2. Export them as `.jar` via [Jaspersoft Studio](https://community.jaspersoft.com/documentation/tibco-jaspersoft-studio-user-guide/v640/working-font-extensions).
 3. Add jar file to classpath of the application.
-4. Now you can use fonts in your documents.
+4. Now you can use them in your documents.
