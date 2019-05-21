@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test_document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2f045355-135b-4fab-9779-d73b6d0136f1">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<queryString>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="test_document"/>
+	<subDataset name="ContactsSubdataset" uuid="4563e834-a9e5-43b5-9f0a-824948c73c73">
+		<field name="name" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="name"/>
+		</field>
+	</subDataset>
+	<queryString language="json">
 		<![CDATA[]]>
 	</queryString>
 	<field name="name" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="name"/>
 		<fieldDescription><![CDATA[name]]></fieldDescription>
 	</field>
 	<field name="description" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="description"/>
 		<fieldDescription><![CDATA[description]]></fieldDescription>
+	</field>
+	<field name="items" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="items"/>
+		<fieldDescription><![CDATA[items]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -24,7 +35,7 @@
 		<band height="61" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="296" splitType="Stretch">
 			<staticText>
 				<reportElement x="80" y="10" width="80" height="20" uuid="adf1a9c8-180c-4a8f-820f-85a25daa84d9"/>
 				<textElement>
@@ -53,6 +64,28 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
+			<componentElement>
+				<reportElement x="80" y="90" width="200" height="60" uuid="105c3994-b8a8-4085-81ef-4a0e55efc7c6"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="ContactsSubdataset" uuid="5459bdfb-6835-4007-8e56-566716c8c29c">
+						<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("items")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="100" uuid="b3d4c078-f65a-4213-9644-83b85b425703">
+						<jr:columnHeader height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="4b972b67-2f1a-4843-857e-c735dfc59c82"/>
+								<text><![CDATA[name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="e618a748-3273-476d-95c5-4d232260bf0a"/>
+								<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
 		</band>
 	</detail>
 	<columnFooter>

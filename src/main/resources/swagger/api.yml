@@ -279,6 +279,8 @@ paths:
         post:
             operationId: generateBinaryDocument
             summary: Generate a binary document
+            tags:
+                - document
             parameters:
                 - schema:
                       $ref: '#/definitions/Document_Generate'
