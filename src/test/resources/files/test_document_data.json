@@ -1,4 +1,12 @@
 {
     "name": "Document name",
-    "description": "Document description"
+    "description": "Document description",
+    "items": [
+        {
+            "name": "First item"
+        },
+        {
+            "name": "Second item"
+        }
+    ]
 }

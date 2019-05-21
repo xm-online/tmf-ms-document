@@ -1,16 +1,18 @@
 package com.icthh.xm.tmf.ms.document.service.generation.rendering.jasper;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.springframework.http.MediaType.*;
+import static org.springframework.http.MediaType.APPLICATION_PDF;
+import static org.springframework.http.MediaType.APPLICATION_XML;
+import static org.springframework.http.MediaType.TEXT_XML;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRenderer;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRendererType;
 import com.icthh.xm.tmf.ms.document.service.generation.rendering.exception.DocumentRenderingException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JsonDataSource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
@@ -43,8 +45,7 @@ public class JasperReportsDocumentRenderer implements DocumentRenderer {
     public byte[] render(String key, MediaType mediaType, Object data) throws DocumentRenderingException {
         byte[] jasperTemplateBytes = templateHolder.getJasperTemplateByKey(key);
         InputStream jasperTemplateInputStream = new ByteArrayInputStream(jasperTemplateBytes);
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
-            (data instanceof Collection) ? (Collection<?>) data : Collections.singleton(data));
+        JsonDataSource dataSource = asJsonDataSource(data);
         try {
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperTemplateInputStream, new HashMap<>(), dataSource);
             return exportDocumentTo(jasperPrint, mediaType);
@@ -52,6 +53,14 @@ public class JasperReportsDocumentRenderer implements DocumentRenderer {
             String msg = String.format("Failed to render document with key '%s'", key);
             log.error(msg, e);
             throw new DocumentRenderingException(msg + ". " + e.getMessage(), e);
+        }
+    }
+
+    private JsonDataSource asJsonDataSource(Object data) {
+        try {
+            return new JsonDataSource(new ByteArrayInputStream(new ObjectMapper().writeValueAsBytes(data)));
+        } catch (JRException | JsonProcessingException e) {
+            throw new DocumentRenderingException("Failed to parse document data as JSON. " + e.getMessage(), e);
         }
     }
 
