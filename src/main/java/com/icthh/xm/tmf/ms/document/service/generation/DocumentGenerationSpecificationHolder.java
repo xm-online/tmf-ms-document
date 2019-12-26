@@ -1,7 +1,7 @@
 package com.icthh.xm.tmf.ms.document.service.generation;
 
 import static com.fasterxml.jackson.databind.type.TypeFactory.defaultInstance;
-import static com.icthh.xm.commons.config.client.repository.TenantConfigRepository.TENANT_NAME;
+import static com.icthh.xm.tmf.ms.document.config.Constants.TENANT_NAME;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -9,7 +9,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.icthh.xm.commons.config.client.api.RefreshableConfiguration;
 import com.icthh.xm.commons.tenant.TenantContextHolder;
 import com.icthh.xm.commons.tenant.TenantContextUtils;
-import com.icthh.xm.tmf.ms.document.web.rest.errors.BadRequestAlertException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
