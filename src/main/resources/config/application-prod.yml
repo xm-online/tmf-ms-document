@@ -21,7 +21,7 @@ logging:
 
 spring:
     kafka:
-        bootstrap-servers: localhost:9092
+        bootstrap-servers: localhost:9093
     devtools:
         restart:
             enabled: false
@@ -35,9 +35,9 @@ spring:
             port: 8500
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://localhost:5432/xm_document
-        username: postgres
-        password: postgres
+        url: jdbc:postgresql://localhost:5432/document
+        username: document
+        password:
         hikari:
             auto-commit: false
     jpa:
