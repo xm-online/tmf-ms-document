@@ -3,9 +3,9 @@
     "promptValues": {
       "packageName": "com.icthh.xm.tmf.ms.document"
     },
-    "jhipsterVersion": "5.7.2",
+    "jhipsterVersion": "6.5.1",
     "applicationType": "microservice",
-    "baseName": "document",
+    "baseName": "documents",
     "packageName": "com.icthh.xm.tmf.ms.document",
     "packageFolder": "com/icthh/xm/tmf/ms/document",
     "serverPort": "8713",
@@ -21,15 +21,19 @@
     "serviceDiscoveryType": "consul",
     "buildTool": "gradle",
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "YWEwZjNjMzg0YmZiMDg2ZmU2NTlkOTRmYThkNjA0ZjA3ODkxZjAxMzVmOGI1NmYwYThmNGNkMTgwZGMxMGRjZWFjMGNhYTk0MjY3NzIyZjkzOTkwODY4YzhkM2RhNTE5N2VmNDNkNGFiMjFmMDA4YTRjYTU3MzJlMzY3NzNmZDM=",
+    "jwtSecretKey": "YWRiY2M4YTI2ZTcyYjQ4Yjk0MTBhZTU2MGQ4MGJiOTZhOWFhZmU5ZDU1ODBiN2NjYWNlN2U2ZmVlNDRmNGRiYmE3MWI1YTJhMjkzZmYyNmJkN2UzZTRkYjJjMDRlZGM1YmMyNDJjNmMyNzE5ZmZmMDRhZmI5YjFkZDBkYzAyMjc=",
+    "embeddableLaunchScript": false,
     "testFrameworks": [
       "gatling",
       "cucumber"
     ],
     "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
     "otherModules": [],
     "enableTranslation": false,
     "clientPackageManager": "npm",
+    "blueprints": [],
     "skipClient": true,
     "skipUserManagement": true
   }

@@ -6,6 +6,7 @@ import static com.icthh.xm.tmf.ms.document.web.rest.util.MediaTypeUtil.parseMedi
 import com.codahale.metrics.annotation.Timed;
 import com.icthh.xm.commons.lep.LogicExtensionPoint;
 import com.icthh.xm.commons.lep.spring.LepService;
+import com.icthh.xm.commons.permission.annotation.PrivilegeDescription;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationService;
 import com.icthh.xm.tmf.ms.document.service.generation.GeneratedDocument;
 import com.icthh.xm.tmf.ms.document.web.api.BinaryDocumentApiDelegate;
@@ -28,6 +29,7 @@ public class BinaryDocumentApiImpl implements BinaryDocumentApiDelegate {
     @Timed
     @LogicExtensionPoint("RetrieveBinary")
     @Override
+    @PrivilegeDescription("Privilege to retrieve binary document")
     public ResponseEntity<Resource> retrieveBinaryDocument(String id) {
         return null;
     }
@@ -35,6 +37,7 @@ public class BinaryDocumentApiImpl implements BinaryDocumentApiDelegate {
     @PreAuthorize("hasPermission({'documentGenerate': #documentGenerate}, 'DOCUMENT.GENERATE.BINARY')")
     @Timed
     @Override
+    @PrivilegeDescription("Privilege to generate binary document")
     public ResponseEntity<Resource> generateBinaryDocument(DocumentGenerate documentGenerate) {
         MediaType documentMimeType = parseMediaType(documentGenerate.getDocumentMimeType());
         GeneratedDocument document = documentGenerationService
