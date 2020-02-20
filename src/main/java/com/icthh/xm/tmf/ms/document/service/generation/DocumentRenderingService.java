@@ -1,5 +1,6 @@
 package com.icthh.xm.tmf.ms.document.service.generation;
 
+import com.icthh.xm.commons.logging.aop.IgnoreLogginAspect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class DocumentRenderingService {
      * @param data data for rendering
      * @return rendered document in binary representation
      */
+    @IgnoreLogginAspect
     public byte[] render(String key, DocumentRendererType rendererType, MediaType resultMediaType, Object data) {
         DocumentRenderer renderer = rendererFactory.getRenderer(rendererType);
         if (!renderer.supportsMediaType(resultMediaType)) {
