@@ -383,3 +383,9 @@ task decrementProjectVersion(dependsOn: configurations.compile) {
         props.save()
     }
 }
+
+task getProjectVersion {
+    doLast {
+        println project.version
+    }
+}
