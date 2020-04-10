@@ -9,6 +9,7 @@ addons:
       secure: Ni04mVkGIWSeV2M0nRkVPievTS2KuzxTnGJB06usqKwJAHajR+ejIFwz1vA+CKA2jFdSMafvsAuPVEUhyVDGGrkq86Q3qVPWGsNv+Iob/WlB+9JhyFFkcqr8X1ljO0vDhsDalCY+s5ImAEKme/u5Fq5JMI8CalhsboEM0Q7LMCWiBIyX3GbGQts8PCrN6Tp+RNb2H2fTzo/bFeyWCYhaCstXqRU3+X7ilD/rDl6ziPRCyOFf703ryQiMHzyGfjNJc8IL+b0Sxw1GQX7Nepmk4sfTkPOcAxQzPjlcS8IbNnZFty5hI0VtC8BZCGWQ44tb46dq4gD9lbuzRgGfroNyYNnjuOvP6zwmv9Y5uFa0b4ZX7B/3cnyz7p1ZlerdmKE07XvlwuZEsqsyYmtm/nS0/SIxQqYEAek+bwANTjKJpHrjhmd/kskxfVcnTwVEAtu/n8IQx+0ub5WcgTSKTnTPknp+14/83zq34DNyUX5CfraLN71VizUpsLBeK4EfAyfG8HIIEm6aSJwfvUSm4F/0wCG6PujIXEz66UC0EvKQX59zoqG00PwE1DazOJqc823kBxKhuJLmcyh+0BuTyn4sZIVt+tkyqm1o0urAtqKxBmVC2MxhMovYhDsOhMTLi92mUKYgNRnID/+GygHBKKegH2IG8AfRayCTltlX0PxkKt8=
     branches:
     - master
+
 script:
 - set -e
 - "./gradlew --no-daemon --refresh-dependencies clean test"

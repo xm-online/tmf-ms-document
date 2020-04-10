@@ -45,6 +45,7 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()
+            .antMatchers("/management/prometheus/**").permitAll()
             .antMatchers("/management/**").hasAuthority(RoleConstant.SUPER_ADMIN)
             .antMatchers("/swagger-resources/configuration/ui").permitAll();
     }
