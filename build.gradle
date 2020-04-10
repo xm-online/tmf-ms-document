@@ -70,7 +70,6 @@ dependencyManagement {
 defaultTasks 'bootRun'
 
 group = 'com.icthh.xm.tmf.ms.document'
-version = '0.0.1-SNAPSHOT'
 
 description = ''
 
