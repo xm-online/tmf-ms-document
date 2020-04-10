@@ -1,6 +1,6 @@
 package com.icthh.xm.tmf.ms.document.service.generation.rendering.jasper;
 
-import static com.icthh.xm.commons.config.client.repository.TenantConfigRepository.TENANT_NAME;
+import static com.icthh.xm.tmf.ms.document.config.Constants.TENANT_NAME;
 
 import com.icthh.xm.commons.config.client.api.RefreshableConfiguration;
 import com.icthh.xm.commons.tenant.TenantContextHolder;

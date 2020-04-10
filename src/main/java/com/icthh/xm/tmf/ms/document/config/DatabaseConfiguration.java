@@ -3,6 +3,8 @@ package com.icthh.xm.tmf.ms.document.config;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.h2.H2ConfigurationHelper;
 import java.sql.SQLException;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,16 +16,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 @EnableJpaRepositories("com.icthh.xm.tmf.ms.document.repository")
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class DatabaseConfiguration {
 
     private final Environment env;
-
-    public DatabaseConfiguration(Environment env) {
-        this.env = env;
-    }
 
     /**
      * Open the TCP port for the H2 database, so it is available remotely.
