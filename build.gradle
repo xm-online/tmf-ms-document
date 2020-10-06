@@ -312,6 +312,11 @@ dependencies {
     }
     testImplementation "org.testcontainers:postgresql:1.6.0"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+    implementation "net.sf.barcode4j:barcode4j:${barcode4j_version}"
+    implementation "com.google.zxing:core:${zxing_version}"
+    implementation "org.apache.xmlgraphics:batik-bridge:${apache_batik_version}"
+
+
     compileOnly "org.projectlombok:lombok:${lombok_version}"
     annotationProcessor "org.projectlombok:lombok:${lombok_version}"
     implementation "com.icthh.xm.commons:xm-commons-security:${xm_commons_version}"
