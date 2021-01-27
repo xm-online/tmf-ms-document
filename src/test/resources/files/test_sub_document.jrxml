@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test_sub" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="89198810-317d-49da-a2fc-01739bc3e9f2">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="json_test_data"/>
+    <queryString language="json">
+        <![CDATA[]]>
+    </queryString>
+    <field name="name" class="java.lang.String">
+        <property name="net.sf.jasperreports.json.field.expression" value="name"/>
+        <fieldDescription><![CDATA[name]]></fieldDescription>
+    </field>
+    <field name="description" class="java.lang.String">
+        <property name="net.sf.jasperreports.json.field.expression" value="description"/>
+        <fieldDescription><![CDATA[description]]></fieldDescription>
+    </field>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band splitType="Stretch"/>
+    </title>
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    <detail>
+        <band height="144" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="80" uuid="58c9e7ba-14d0-4b6d-97ee-bd8d0bca473e"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="16"/>
+                </textElement>
+                <text><![CDATA[Sub document]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="80" y="80" width="80" height="20" uuid="adf1a9c8-180c-4a8f-820f-85a25daa84d9"/>
+                <textElement>
+                    <font fontName="DejaVu Sans" size="16"/>
+                </textElement>
+                <text><![CDATA[Name:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="200" y="80" width="300" height="20" uuid="237abae7-d919-4d6f-a0e8-ccf1e6814291"/>
+                <textElement>
+                    <font fontName="DejaVu Sans" size="16"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="80" y="110" width="100" height="20" uuid="be01c619-9f9c-47d4-ada9-1642df79b211"/>
+                <textElement>
+                    <font fontName="DejaVu Sans" size="16"/>
+                </textElement>
+                <text><![CDATA[Description:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="200" y="110" width="300" height="20" uuid="5df70314-98f4-44b2-a2dd-4bd403696e3a"/>
+                <textElement>
+                    <font fontName="DejaVu Sans" size="16"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>

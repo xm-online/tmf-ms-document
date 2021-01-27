@@ -1,6 +1,10 @@
 {
     "name": "Document name",
     "description": "Document description",
+    "subDocument": {
+        "name": "Sub document name",
+        "description": "Sub document description"
+    },
     "items": [
         {
             "name": "First item"

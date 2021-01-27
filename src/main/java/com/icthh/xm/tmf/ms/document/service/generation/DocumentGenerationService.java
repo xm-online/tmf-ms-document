@@ -51,7 +51,7 @@ public class DocumentGenerationService {
         Object renderingData) {
         byte[] documentBytes;
         try {
-            documentBytes = renderingService.render(key, spec.getRenderer(), contentType, renderingData);
+            documentBytes = renderingService.render(key, spec, contentType, renderingData);
         } catch (Exception e) {
             String msg = String.format("Failed to render document with key = '%s', mime type = '%s'", key, contentType.toString());
             log.error(msg, e);
