@@ -7,7 +7,6 @@
 			<property name="net.sf.jasperreports.json.field.expression" value="name"/>
 		</field>
 	</subDataset>
-    <parameter name="subDocument" class="java.io.InputStream" isForPrompting="false"/>
 	<queryString language="json">
 		<![CDATA[]]>
 	</queryString>
@@ -87,11 +86,6 @@
 					</jr:column>
 				</jr:table>
 			</componentElement>
-            <subreport>
-                <reportElement positionType="Float" x="0" y="171" width="550" height="44" uuid="b1888517-25ee-41f2-a61a-f554961b5d07"/>
-                <dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("subDocument")]]></dataSourceExpression>
-                <subreportExpression><![CDATA[$P{subDocument}]]></subreportExpression>
-            </subreport>
 		</band>
 	</detail>
 	<columnFooter>

@@ -1,6 +1,6 @@
 package com.icthh.xm.tmf.ms.document.service.generation;
 
-import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocumentDetail;
+import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
 import com.icthh.xm.tmf.ms.document.service.generation.rendering.exception.DocumentRenderingException;
 import org.springframework.http.MediaType;
 import java.util.List;
@@ -20,7 +20,7 @@ public interface DocumentRenderer {
      * @return generated document in bytes representation
      * @throws DocumentRenderingException if error occurs during document rendering
      */
-    byte[] render(String key, MediaType mediaType, Object data, List<SubDocumentDetail> subDocuments) throws DocumentRenderingException;
+    byte[] render(String key, MediaType mediaType, Object data, List<SubDocument> subDocuments) throws DocumentRenderingException;
 
     /**
      * Return whether the renderer able to render to {@code mediaType} format.

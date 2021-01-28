@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.spy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocumentDetail;
+import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationUtils;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +39,8 @@ public class JasperReportsDocumentRendererTest {
         templateFileConfigKey = buildTemplateFileConfigKey(key);
 
         initTemplateHolderWithTemplate(templateFileConfigKey, "files/test_document.jrxml");
+        initTemplateHolderWithTemplate(buildTemplateFileConfigKey("TEST_PRIMARY_DOCUMENT"),
+            "files/test_primary_document.jrxml");
         initTemplateHolderWithTemplate(buildTemplateFileConfigKey("TEST_SUB_DOCUMENT"),
             "files/test_sub_document.jrxml");
     }
@@ -54,8 +56,8 @@ public class JasperReportsDocumentRendererTest {
 
     @Test
     public void render_withSubDocument_exportToPdf() {
-        List<SubDocumentDetail> subDocuments = List.of(buildSubDocument());
-        byte[] renderedDocument = renderer.render(key, mediaType, data, subDocuments);
+        List<SubDocument> subDocuments = List.of(buildSubDocument());
+        byte[] renderedDocument = renderer.render("TEST_PRIMARY_DOCUMENT", mediaType, data, subDocuments);
 
         assertThat(renderedDocument).isNotEmpty();
         // see rendered file in build/resources/files/test_sub_document_result.pdf
@@ -101,11 +103,11 @@ public class JasperReportsDocumentRendererTest {
             DocumentGenerationUtils.buildDocumentFilename(key));
     }
 
-    private SubDocumentDetail buildSubDocument() {
-        SubDocumentDetail subDocumentDetail = new SubDocumentDetail();
-        subDocumentDetail.setRefKey("TEST_SUB_DOCUMENT");
-        subDocumentDetail.setTemplateInjectionKey("subDocument");
-        return subDocumentDetail;
+    private SubDocument buildSubDocument() {
+        SubDocument subDocument = new SubDocument();
+        subDocument.setRefKey("TEST_SUB_DOCUMENT");
+        subDocument.setTemplateInjectionKey("subDocument");
+        return subDocument;
     }
 
     private Map readJsonData() throws java.io.IOException {

@@ -11,7 +11,7 @@ import static org.mockito.Mockito.spy;
 
 import java.util.Collections;
 import java.util.List;
-import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocumentDetail;
+import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -66,17 +66,25 @@ public class DocumentRenderingServiceTest {
             .withMessageStartingWith("Renderer implementation not found");
     }
 
+    @Test
+    public void render_WithSubDocumentInSpec() {
+        spec.setSubDocuments(List.of(buildSubDocument()));
+
+        byte[] result = renderingService.render(key, spec, mediaType, new Object());
+
+        assertThat(result).isEqualTo(renderedDocumentBytes);
+    }
+
     private DocumentGenerationSpec buildSpec(DocumentRendererType rendererType) {
         DocumentGenerationSpec spec = new DocumentGenerationSpec();
         spec.setRenderer(rendererType);
-        spec.setSubDocuments(List.of(buildSubDocument()));
         return spec;
     }
 
-    private SubDocumentDetail buildSubDocument() {
-        SubDocumentDetail subDocumentDetail = new SubDocumentDetail();
-        subDocumentDetail.setRefKey("TEST_SUB_DOCUMENT");
-        subDocumentDetail.setTemplateInjectionKey("subDocument");
-        return subDocumentDetail;
+    private SubDocument buildSubDocument() {
+        SubDocument subDocument = new SubDocument();
+        subDocument.setRefKey("TEST_SUB_DOCUMENT");
+        subDocument.setTemplateInjectionKey("subDocument");
+        return subDocument;
     }
 }

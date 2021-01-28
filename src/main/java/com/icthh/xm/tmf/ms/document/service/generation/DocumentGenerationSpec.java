@@ -25,11 +25,11 @@ public class DocumentGenerationSpec {
 
     private DocumentRendererType renderer;
 
-    private List<SubDocumentDetail> subDocuments;
+    private List<SubDocument> subDocuments;
 
     @Getter
     @Setter
-    public static class SubDocumentDetail {
+    public static class SubDocument {
         private String refKey;
         private String templateInjectionKey;
     }
