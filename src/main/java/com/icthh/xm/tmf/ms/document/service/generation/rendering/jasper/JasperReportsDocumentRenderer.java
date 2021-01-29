@@ -8,12 +8,15 @@ import static org.springframework.http.MediaType.TEXT_XML;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
+import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRenderer;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRendererType;
 import com.icthh.xm.tmf.ms.document.service.generation.rendering.exception.DocumentRenderingException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
@@ -42,18 +45,33 @@ public class JasperReportsDocumentRenderer implements DocumentRenderer {
      * @see ApplicationProperties.DocumentGeneration properties.
      */
     @Override
-    public byte[] render(String key, MediaType mediaType, Object data) throws DocumentRenderingException {
+    public byte[] render(String key, MediaType mediaType, Object data, List<SubDocument> subDocuments) throws DocumentRenderingException {
         byte[] jasperTemplateBytes = templateHolder.getJasperTemplateByKey(key);
         InputStream jasperTemplateInputStream = new ByteArrayInputStream(jasperTemplateBytes);
+
+        Map<String, Object> parameters = new HashMap<>();
+        if(subDocuments != null){
+            fillSubDocumentParams(parameters, subDocuments);
+        }
+
         JsonDataSource dataSource = asJsonDataSource(data);
         try {
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperTemplateInputStream, new HashMap<>(), dataSource);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperTemplateInputStream, parameters, dataSource);
             return exportDocumentTo(jasperPrint, mediaType);
         } catch (JRException e) {
             String msg = String.format("Failed to render document with key '%s'", key);
             log.error(msg, e);
             throw new DocumentRenderingException(msg + ". " + e.getMessage(), e);
         }
+    }
+
+    private void fillSubDocumentParams(Map<String, Object> parameters, List<SubDocument> subDocuments) {
+        subDocuments.forEach(it -> {
+            byte[] jasperTemplateBytes = templateHolder.getJasperTemplateByKey(it.getRefKey());
+            InputStream jasperTemplateInputStream = new ByteArrayInputStream(jasperTemplateBytes);
+
+            parameters.put(it.getTemplateInjectionKey(), jasperTemplateInputStream);
+        });
     }
 
     private JsonDataSource asJsonDataSource(Object data) {

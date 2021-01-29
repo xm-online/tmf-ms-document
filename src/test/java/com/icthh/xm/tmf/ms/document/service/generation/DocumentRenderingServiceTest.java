@@ -10,6 +10,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 import java.util.Collections;
+import java.util.List;
+import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -21,7 +23,10 @@ public class DocumentRenderingServiceTest {
     private DocumentRenderer renderer;
 
     private MediaType mediaType;
+
+    private DocumentGenerationSpec spec;
     private DocumentRendererType rendererType;
+
     private byte[] renderedDocumentBytes = new byte[5];
     private String key;
 
@@ -30,18 +35,19 @@ public class DocumentRenderingServiceTest {
         key = "TEST_DOCUMENT";
         mediaType = MediaType.APPLICATION_PDF;
         rendererType = DocumentRendererType.JASPER_REPORTS;
+        spec = buildSpec(rendererType);
 
         renderer = mock(DocumentRenderer.class);
         doReturn(true).when(renderer).supportsMediaType(eq(mediaType));
         doReturn(rendererType).when(renderer).getType();
         rendererFactory = spy(new DocumentRendererFactory(Collections.singletonList(renderer)));
         renderingService = new DocumentRenderingService(rendererFactory);
-        doReturn(renderedDocumentBytes).when(renderer).render(anyString(), any(), any());
+        doReturn(renderedDocumentBytes).when(renderer).render(anyString(), any(), any(), any());
     }
 
     @Test
     public void render() {
-        byte[] result = renderingService.render(key, rendererType, mediaType, new Object());
+        byte[] result = renderingService.render(key, spec, mediaType, new Object());
 
         assertThat(result).isEqualTo(renderedDocumentBytes);
     }
@@ -49,14 +55,36 @@ public class DocumentRenderingServiceTest {
     @Test
     public void render_RendererNotSupportsMediaType() {
         assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> renderingService.render(key, rendererType, MediaType.ALL, new Object()))
+            .isThrownBy(() -> renderingService.render(key, spec, MediaType.ALL, new Object()))
             .withMessage(String.format("Renderer of type %s doesn't support '%s' media type", rendererType, MediaType.ALL_VALUE));
     }
 
     @Test
     public void render_RendererNotFound() {
         assertThatExceptionOfType(IllegalStateException.class)
-            .isThrownBy(() -> renderingService.render(key, null, mediaType, new Object()))
+            .isThrownBy(() -> renderingService.render(key, buildSpec(null), mediaType, new Object()))
             .withMessageStartingWith("Renderer implementation not found");
+    }
+
+    @Test
+    public void render_WithSubDocumentInSpec() {
+        spec.setSubDocuments(List.of(buildSubDocument()));
+
+        byte[] result = renderingService.render(key, spec, mediaType, new Object());
+
+        assertThat(result).isEqualTo(renderedDocumentBytes);
+    }
+
+    private DocumentGenerationSpec buildSpec(DocumentRendererType rendererType) {
+        DocumentGenerationSpec spec = new DocumentGenerationSpec();
+        spec.setRenderer(rendererType);
+        return spec;
+    }
+
+    private SubDocument buildSubDocument() {
+        SubDocument subDocument = new SubDocument();
+        subDocument.setRefKey("TEST_SUB_DOCUMENT");
+        subDocument.setTemplateInjectionKey("subDocument");
+        return subDocument;
     }
 }

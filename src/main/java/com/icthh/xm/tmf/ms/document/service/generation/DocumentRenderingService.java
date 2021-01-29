@@ -17,18 +17,19 @@ public class DocumentRenderingService {
     /**
      * Render document with a specific renderer implementation.
      *
-     * @param rendererType type of renderer to use
+     * @param spec document spec
      * @param resultMediaType result document media type
      * @param data data for rendering
      * @return rendered document in binary representation
      */
     @IgnoreLogginAspect
-    public byte[] render(String key, DocumentRendererType rendererType, MediaType resultMediaType, Object data) {
+    public byte[] render(String key, DocumentGenerationSpec spec, MediaType resultMediaType, Object data) {
+        DocumentRendererType rendererType = spec.getRenderer();
         DocumentRenderer renderer = rendererFactory.getRenderer(rendererType);
         if (!renderer.supportsMediaType(resultMediaType)) {
             throw new IllegalArgumentException(String.format("Renderer of type %s doesn't support '%s' media type",
                 rendererType.name(), resultMediaType.toString()));
         }
-        return renderer.render(key, resultMediaType, data);
+        return renderer.render(key, resultMediaType, data, spec.getSubDocuments());
     }
 }

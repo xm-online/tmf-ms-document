@@ -3,3 +3,16 @@ TEST_DOCUMENT:
     allowedDocumentMimeTypes: [application/pdf, text/xml]
     defaultDocumentMimeType: application/pdf
     renderer: JASPER_REPORTS
+
+TEST_PRIMARY_DOCUMENT:
+    allowedDocumentMimeTypes: [application/pdf, text/xml]
+    defaultDocumentMimeType: application/pdf
+    renderer: JASPER_REPORTS
+    subDocuments:
+        -   refKey: TEST_SUB_DOCUMENT
+            templateInjectionKey: options
+
+TEST_SUB_DOCUMENT:
+    allowedDocumentMimeTypes: [application/pdf, text/xml]
+    defaultDocumentMimeType: application/pdf
+    renderer: JASPER_REPORTS

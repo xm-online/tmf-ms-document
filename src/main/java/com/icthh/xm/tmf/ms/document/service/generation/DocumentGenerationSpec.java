@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.icthh.xm.tmf.ms.document.service.converter.MediaTypeConverter;
+import java.util.List;
 import java.util.Set;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.MediaType;
 
 @Data
@@ -21,5 +24,14 @@ public class DocumentGenerationSpec {
     private MediaType defaultDocumentMimeType;
 
     private DocumentRendererType renderer;
+
+    private List<SubDocument> subDocuments;
+
+    @Getter
+    @Setter
+    public static class SubDocument {
+        private String refKey;
+        private String templateInjectionKey;
+    }
 
 }

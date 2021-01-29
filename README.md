@@ -148,6 +148,46 @@ where:
 * `renderer` - type of the renderer to use for document generation. Currently available (with supported mime types): 
     * JASPER_REPORTS (_application/pdf_, _application/xml_)
 
+To generates document with sub documents, describe document specification in the YAML file (_documents.yml_):
+Example:
+```yaml
+TEST_PRIMARY_DOCUMENT:
+  allowedDocumentMimeTypes: [application/pdf, text/xml]
+  defaultDocumentMimeType: application/pdf
+  renderer: JASPER_REPORTS
+  subDocuments:
+    -  refKey: TEST_SUB_DOCUMENT
+       templateInjectionKey: options
+
+TEST_SUB_DOCUMENT:
+  allowedDocumentMimeTypes: [application/pdf, text/xml]
+  defaultDocumentMimeType: application/pdf
+  renderer: JASPER_REPORTS
+```
+where:
+* `TEST_PRIMARY_DOCUMENT` - unique key of the document specification, which contains the sub documents    
+* `subDocuments` - list of sub documents
+    * `refKey` -  unique key of the sub document specification
+    * `templateInjectionKey` - unique key for embedding a sub document in the main document as parameter
+* `TEST_SUB_DOCUMENT` - unique key of the sub document specification used to specify which type of a document to generate
+
+Injection sub document in main document jasper report example:
+* Declare report parameter: 
+```
+<parameter name="options" class="java.io.InputStream" isForPrompting="false"/> 
+```      
+`name` - parameter name and equals to `templateInjectionKey` value
+
+* Declare subreport block
+
+```
+<subreport>
+    <reportElement positionType="Float" x="0" y="171" width="550" height="44" uuid="b1888517-25ee-41f2-a61a-f554961b5d07"/>
+    <dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("options")]]></dataSourceExpression>
+    <subreportExpression><![CDATA[$P{options}]]></subreportExpression>
+</subreport>
+```       
+
 ### How to generate documents with [JasperReports](https://community.jaspersoft.com/project/jasperreports-library)
 
 1. Describe document specification in the documents YAML file with `renderer: JASPER_REPORTS`
