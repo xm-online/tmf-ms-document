@@ -7,6 +7,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.icthh.xm.commons.lep.LogicExtensionPoint;
 import com.icthh.xm.commons.lep.spring.LepService;
 import com.icthh.xm.commons.permission.annotation.PrivilegeDescription;
+import com.icthh.xm.tmf.ms.document.lep.keyresolver.ProfileKeyResolver;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationService;
 import com.icthh.xm.tmf.ms.document.service.generation.GeneratedDocument;
 import com.icthh.xm.tmf.ms.document.web.api.BinaryDocumentApiDelegate;
@@ -37,6 +38,7 @@ public class BinaryDocumentApiImpl implements BinaryDocumentApiDelegate {
     @PreAuthorize("hasPermission({'documentGenerate': #documentGenerate}, 'DOCUMENT.GENERATE.BINARY')")
     @Timed
     @Override
+    @LogicExtensionPoint(value = "GenerateBinary", resolver = ProfileKeyResolver.class)
     @PrivilegeDescription("Privilege to generate binary document")
     public ResponseEntity<Resource> generateBinaryDocument(DocumentGenerate documentGenerate) {
         MediaType documentMimeType = parseMediaType(documentGenerate.getDocumentMimeType());
