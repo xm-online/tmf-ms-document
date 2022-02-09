@@ -209,7 +209,6 @@ repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
-    maven { url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" }
     //jhipster-needle-gradle-repositories - JHipster will add additional repositories
 }
 
