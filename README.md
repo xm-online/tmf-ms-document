@@ -137,7 +137,7 @@ To generates document, describe document specification in the YAML file (_docume
 Example:
 ```yaml
 TEST_DOCUMENT:
-  allowedDocumentMimeTypes: [application/pdf, text/xml]
+  allowedDocumentMimeTypes: [application/pdf, text/xml, application/octet-stream]
   defaultDocumentMimeType: application/pdf
   renderer: JASPER_REPORTS
 ```
@@ -152,7 +152,7 @@ To generates document with sub documents, describe document specification in the
 Example:
 ```yaml
 TEST_PRIMARY_DOCUMENT:
-  allowedDocumentMimeTypes: [application/pdf, text/xml]
+  allowedDocumentMimeTypes: [application/pdf, text/xml, application/octet-stream]
   defaultDocumentMimeType: application/pdf
   renderer: JASPER_REPORTS
   subDocuments:
@@ -160,7 +160,7 @@ TEST_PRIMARY_DOCUMENT:
        templateInjectionKey: options
 
 TEST_SUB_DOCUMENT:
-  allowedDocumentMimeTypes: [application/pdf, text/xml]
+  allowedDocumentMimeTypes: [application/pdf, text/xml, application/octet-stream]
   defaultDocumentMimeType: application/pdf
   renderer: JASPER_REPORTS
 ```

@@ -1,13 +1,9 @@
 package com.icthh.xm.tmf.ms.document.service.generation.rendering.jasper;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.springframework.http.MediaType.APPLICATION_PDF;
-import static org.springframework.http.MediaType.APPLICATION_XML;
-import static org.springframework.http.MediaType.TEXT_XML;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
+import com.icthh.xm.tmf.ms.document.helper.ExportDocumentHelper;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRenderer;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRendererType;
@@ -17,10 +13,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JsonDataSource;
@@ -36,6 +32,14 @@ import org.springframework.stereotype.Component;
 public class JasperReportsDocumentRenderer implements DocumentRenderer {
 
     private final JasperReportsTemplateHolder templateHolder;
+    private final List<ExportDocumentHelper> exportDocumentHelpersList;
+    private Map<MediaType, ExportDocumentHelper> exportDocumentHelpers = new HashMap<>();
+
+    @PostConstruct
+    public void setup() {
+        exportDocumentHelpersList.forEach(exportDocumentHelper ->
+            exportDocumentHelpers.put(exportDocumentHelper.getMediaType(), exportDocumentHelper));
+    }
 
     /**
      * Look for jasper template file, feel it with {@code data} content and export
@@ -50,7 +54,7 @@ public class JasperReportsDocumentRenderer implements DocumentRenderer {
         InputStream jasperTemplateInputStream = new ByteArrayInputStream(jasperTemplateBytes);
 
         Map<String, Object> parameters = new HashMap<>();
-        if(subDocuments != null){
+        if (subDocuments != null) {
             fillSubDocumentParams(parameters, subDocuments);
         }
 
@@ -83,13 +87,12 @@ public class JasperReportsDocumentRenderer implements DocumentRenderer {
     }
 
     private byte[] exportDocumentTo(JasperPrint jasperPrint, MediaType mediaType) throws JRException {
-        if (APPLICATION_PDF.equals(mediaType)) {
-            return JasperExportManager.exportReportToPdf(jasperPrint);
+        if (!exportDocumentHelpers.containsKey(mediaType)) {
+            throw new IllegalArgumentException(mediaType.toString() + " not supported by JasperReports");
         }
-        if (TEXT_XML.equals(mediaType) || APPLICATION_XML.equals(mediaType)) {
-            return JasperExportManager.exportReportToXml(jasperPrint).getBytes(UTF_8);
-        }
-        throw new IllegalArgumentException(mediaType.toString() + " not supported by JasperReports");
+        return exportDocumentHelpers
+            .get(mediaType)
+            .exportReport(jasperPrint);
     }
 
     @Override
