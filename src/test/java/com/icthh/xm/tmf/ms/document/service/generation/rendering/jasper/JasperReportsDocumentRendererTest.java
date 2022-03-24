@@ -8,6 +8,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.spy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.icthh.xm.tmf.ms.document.helper.ApplicationXmlDocumentHelper;
+import com.icthh.xm.tmf.ms.document.helper.PdfDocumentHelper;
+import com.icthh.xm.tmf.ms.document.helper.TextXmlDocumentHelper;
+import com.icthh.xm.tmf.ms.document.helper.XlsxDocumentHelper;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationUtils;
 import java.util.List;
@@ -34,7 +38,9 @@ public class JasperReportsDocumentRendererTest {
         data = readJsonData();
 
         templateHolder = spy(new JasperReportsTemplateHolder(mockTenantContextHolder("TEST")));
-        renderer = new JasperReportsDocumentRenderer(templateHolder);
+        renderer = new JasperReportsDocumentRenderer(templateHolder, List.of(new PdfDocumentHelper(),
+            new TextXmlDocumentHelper(), new ApplicationXmlDocumentHelper(), new XlsxDocumentHelper()));
+        renderer.setup();
         mediaType = MediaType.APPLICATION_PDF;
         templateFileConfigKey = buildTemplateFileConfigKey(key);
 
@@ -48,10 +54,19 @@ public class JasperReportsDocumentRendererTest {
     @Test
     public void render_exportToPdf() {
         byte[] renderedDocument = renderer.render(key, mediaType, data, null);
-
         assertThat(renderedDocument).isNotEmpty();
         // see rendered file in build/resources/files/test_document_result.pdf
         writeFileToBuildResource(renderedDocument, "files", "test_document_result.pdf");
+    }
+
+    @Test
+    public void render_exportToXlsx() {
+        mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        byte[] renderedDocument = renderer.render(key, mediaType, data, null);
+
+        assertThat(renderedDocument).isNotEmpty();
+        // see rendered file in build/resources/files/test_document_result.xlsx
+        writeFileToBuildResource(renderedDocument, "files", "test_document_result.xlsx");
     }
 
     @Test
@@ -78,7 +93,7 @@ public class JasperReportsDocumentRendererTest {
         templateHolder.onRefresh(templateFileConfigKey, null);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> renderer.render(key, mediaType, data,null))
+            .isThrownBy(() -> renderer.render(key, mediaType, data, null))
             .withMessageStartingWith("JasperReports template not found");
     }
 
@@ -88,7 +103,7 @@ public class JasperReportsDocumentRendererTest {
         templateHolder.onRefresh(templateFileConfigKey, "invalid template file");
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() ->renderer.render(key, mediaType, data, null));
+            .isThrownBy(() -> renderer.render(key, mediaType, data, null));
     }
 
     private void initTemplateHolderWithTemplate(String templateFileConfigKey, String resourceFilePath) {
