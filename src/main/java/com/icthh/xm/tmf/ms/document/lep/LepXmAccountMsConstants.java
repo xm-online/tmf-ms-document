@@ -12,6 +12,8 @@ public final class LepXmAccountMsConstants {
     public static final String BINDING_KEY_TEMPLATES = "templates";
     public static final String BINDING_SUB_KEY_TEMPLATE_REST = "rest";
 
+    public static final String BINDING_KEY_METER_REGISTRY = "meterRegistry";
+
     private LepXmAccountMsConstants() {
         throw new UnsupportedOperationException("Prevent creation for constructor utils class");
     }
