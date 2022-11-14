@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 @RequiredArgsConstructor
 @Getter
 public enum DocumentRendererType {
-    JASPER_REPORTS(of(APPLICATION_PDF, TEXT_XML, APPLICATION_XML, APPLICATION_OCTET_STREAM));
+    JASPER_REPORTS(of(APPLICATION_PDF, TEXT_XML, APPLICATION_XML, APPLICATION_OCTET_STREAM, MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document")));
 
     private final Set<MediaType> supportedMimeTypes;
 }

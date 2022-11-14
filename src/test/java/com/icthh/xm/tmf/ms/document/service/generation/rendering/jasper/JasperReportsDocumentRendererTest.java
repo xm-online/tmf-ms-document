@@ -9,6 +9,7 @@ import static org.mockito.Mockito.spy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icthh.xm.tmf.ms.document.helper.ApplicationXmlDocumentHelper;
+import com.icthh.xm.tmf.ms.document.helper.DocxDocumentHelper;
 import com.icthh.xm.tmf.ms.document.helper.PdfDocumentHelper;
 import com.icthh.xm.tmf.ms.document.helper.TextXmlDocumentHelper;
 import com.icthh.xm.tmf.ms.document.helper.XlsxDocumentHelper;
@@ -39,7 +40,7 @@ public class JasperReportsDocumentRendererTest {
 
         templateHolder = spy(new JasperReportsTemplateHolder(mockTenantContextHolder("TEST")));
         renderer = new JasperReportsDocumentRenderer(templateHolder, List.of(new PdfDocumentHelper(),
-            new TextXmlDocumentHelper(), new ApplicationXmlDocumentHelper(), new XlsxDocumentHelper()));
+            new TextXmlDocumentHelper(), new ApplicationXmlDocumentHelper(), new XlsxDocumentHelper(), new DocxDocumentHelper()));
         renderer.setup();
         mediaType = MediaType.APPLICATION_PDF;
         templateFileConfigKey = buildTemplateFileConfigKey(key);
@@ -67,6 +68,16 @@ public class JasperReportsDocumentRendererTest {
         assertThat(renderedDocument).isNotEmpty();
         // see rendered file in build/resources/files/test_document_result.xlsx
         writeFileToBuildResource(renderedDocument, "files", "test_document_result.xlsx");
+    }
+
+    @Test
+    public void render_exportToDocx() {
+        mediaType = MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        byte[] renderedDocument = renderer.render(key, mediaType, data, null);
+
+        assertThat(renderedDocument).isNotEmpty();
+        // see rendered file in build/resources/test/files/test_document_result.docx
+        writeFileToBuildResource(renderedDocument, "files", "test_document_result.docx");
     }
 
     @Test
