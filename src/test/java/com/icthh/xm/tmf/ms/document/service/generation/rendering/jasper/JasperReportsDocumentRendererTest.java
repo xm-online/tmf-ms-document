@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.spy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.icthh.xm.tmf.ms.document.config.Constants;
 import com.icthh.xm.tmf.ms.document.helper.ApplicationXmlDocumentHelper;
 import com.icthh.xm.tmf.ms.document.helper.DocxDocumentHelper;
 import com.icthh.xm.tmf.ms.document.helper.PdfDocumentHelper;
@@ -72,7 +73,7 @@ public class JasperReportsDocumentRendererTest {
 
     @Test
     public void render_exportToDocx() {
-        mediaType = MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        mediaType = Constants.APPLICATION_DOCX;
         byte[] renderedDocument = renderer.render(key, mediaType, data, null);
 
         assertThat(renderedDocument).isNotEmpty();

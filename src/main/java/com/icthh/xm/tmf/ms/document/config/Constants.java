@@ -1,6 +1,7 @@
 package com.icthh.xm.tmf.ms.document.config;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.http.MediaType;
 
 /**
  * Application constants.
@@ -16,4 +17,6 @@ public final class Constants {
     public static final String DEFAULT_LANGUAGE = "en";
 
     public static final String TENANT_NAME = "tenantName";
+
+    public static final MediaType APPLICATION_DOCX = MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 
+import static com.icthh.xm.tmf.ms.document.config.Constants.APPLICATION_DOCX;
+
 @Component
 @Slf4j
 public class DocxDocumentHelper implements ExportDocumentHelper {
@@ -34,7 +36,7 @@ public class DocxDocumentHelper implements ExportDocumentHelper {
 
     @Override
     public MediaType getMediaType() {
-        return MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        return APPLICATION_DOCX;
     }
 
 }
