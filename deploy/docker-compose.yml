@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 services:
     document-app:
         image: xmonline/tmf-ms-document:${IMAGE_TMF_MS_DOCUMENT_TAG:-latest}
