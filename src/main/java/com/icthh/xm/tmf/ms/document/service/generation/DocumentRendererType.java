@@ -15,7 +15,9 @@ import org.springframework.http.MediaType;
 @RequiredArgsConstructor
 @Getter
 public enum DocumentRendererType {
-    JASPER_REPORTS(of(APPLICATION_PDF, TEXT_XML, APPLICATION_XML, APPLICATION_OCTET_STREAM, APPLICATION_DOCX));
+    JASPER_REPORTS(of(APPLICATION_PDF, TEXT_XML, APPLICATION_XML, APPLICATION_OCTET_STREAM, APPLICATION_DOCX)),
+
+    CARBONE(of(APPLICATION_PDF));
 
     private final Set<MediaType> supportedMimeTypes;
 }
