@@ -1,7 +1,8 @@
 package com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone;
 
-import com.icthh.xm.tmf.ms.document.domain.TenantProperties;
-import com.icthh.xm.tmf.ms.document.service.TenantPropertiesService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.icthh.xm.commons.config.client.service.TenantConfigService;
+import com.icthh.xm.tmf.ms.document.domain.TenantConfigDocumentProperties;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRenderer;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRendererType;
@@ -17,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,18 +32,21 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
     private static final String URL_PATH_SEGMENT_RENDER = "render";
     private static final String URL_PATH_SEGMENT_TEMPLATE = "template";
 
-    private final CarboneTemplateHolder templateHolder;
-    private final TenantPropertiesService tenantPropertiesService;
+    private static final String TENANT_CONFIG_KEY = "document";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final CarboneTemplateHolder templateHolder;
+    private final TenantConfigService tenantConfigService;
+    private final RestTemplate vanillaRestTemplate;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public byte[] render(String key,
                          MediaType mediaType,
                          Object data,
                          List<DocumentGenerationSpec.SubDocument> subDocuments) throws DocumentRenderingException {
-        TenantProperties tenantProperties = tenantPropertiesService.getTenantProps();
-        byte[] template = templateHolder.getTemplateByKey(key);
+        TenantConfigDocumentProperties tenantProperties = resolveTenantProperties();
+        String template = templateHolder.getTemplateByKey(key);
 
         String baseUrl = tenantProperties.getRenderer().getCarbone().getUrl();
         HttpHeaders headers = mapCarboneHeaders(tenantProperties.getRenderer().getCarbone().getHeaders());
@@ -59,22 +62,9 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
         return DocumentRendererType.CARBONE;
     }
 
-    private AddRenderTemplateResponse callAddRender(String baseUrl,
-                                                    Map<String, Object> requestBody,
-                                                    HttpHeaders headers) {
-        var url = collectUrl(baseUrl, URL_PATH_SEGMENT_RENDER, URL_PATH_SEGMENT_TEMPLATE);
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
-        return restTemplate.exchange(url, HttpMethod.POST, request, AddRenderTemplateResponse.class).getBody();
-    }
-
-    private byte[] callGetDocument(String baseUrl, String renderId, HttpHeaders headers) {
-        String url = collectUrl(baseUrl, URL_PATH_SEGMENT_RENDER, renderId);
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(headers);
-        return restTemplate.exchange(url, HttpMethod.GET, request, byte[].class).getBody();
-    }
-
-    private String collectUrl(String baseUrl, String... pathSegments) {
-        return UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment(pathSegments).toUriString();
+    private TenantConfigDocumentProperties resolveTenantProperties() {
+        var properties = tenantConfigService.getConfig().get(TENANT_CONFIG_KEY);
+        return objectMapper.convertValue(properties, TenantConfigDocumentProperties.class);
     }
 
     private HttpHeaders mapCarboneHeaders(Map<String, String> headers) {
@@ -88,9 +78,9 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
         return new HttpHeaders(toMultiValueMap(collect));
     }
 
-    private Map<String, Object> mapRenderRequestBody(Object data, byte[] template) {
+    private Map<String, Object> mapRenderRequestBody(Object data, String template) {
         Map<String, Object> requestData = toMap(data);
-        requestData.put("template", encodedContent(template));
+        requestData.put("template", template);
         return requestData;
     }
 
@@ -102,8 +92,22 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
         throw new IllegalArgumentException("Unexpected document data type: " + data.getClass());
     }
 
-    private String encodedContent(byte[] content) {
-        return Base64.getEncoder().encodeToString(content);
+    private AddRenderTemplateResponse callAddRender(String baseUrl,
+                                                    Map<String, Object> requestBody,
+                                                    HttpHeaders headers) {
+        var url = collectUrl(baseUrl, URL_PATH_SEGMENT_RENDER, URL_PATH_SEGMENT_TEMPLATE);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+        return vanillaRestTemplate.exchange(url, HttpMethod.POST, request, AddRenderTemplateResponse.class).getBody();
+    }
+
+    private byte[] callGetDocument(String baseUrl, String renderId, HttpHeaders headers) {
+        String url = collectUrl(baseUrl, URL_PATH_SEGMENT_RENDER, renderId);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(headers);
+        return vanillaRestTemplate.exchange(url, HttpMethod.GET, request, byte[].class).getBody();
+    }
+
+    private String collectUrl(String baseUrl, String... pathSegments) {
+        return UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment(pathSegments).toUriString();
     }
 
 }

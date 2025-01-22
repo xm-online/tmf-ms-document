@@ -3,7 +3,6 @@ package com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone;
 import com.icthh.xm.commons.config.client.api.RefreshableConfiguration;
 import com.icthh.xm.commons.tenant.TenantContextHolder;
 import com.icthh.xm.commons.tenant.TenantContextUtils;
-import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
@@ -12,15 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.icthh.xm.tmf.ms.document.config.Constants.TENANT_NAME;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
 @RequiredArgsConstructor
@@ -30,9 +26,8 @@ public class CarboneTemplateHolder implements RefreshableConfiguration {
     private static final String FILENAME_PATTERN_VAR_NAME = "filename";
 
     private final TenantContextHolder tenantContextHolder;
-    private final ApplicationProperties applicationProperties;
 
-    private final Map<String, Map<String, byte[]>> tenantCarboneTemplateMap = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, String>> tenantCarboneTemplateMap = new ConcurrentHashMap<>();
     private final AntPathMatcher matcher = new AntPathMatcher();
 
     @Value("${application.document-generation.carbone-templates-path-pattern}")
@@ -45,8 +40,8 @@ public class CarboneTemplateHolder implements RefreshableConfiguration {
      * @return bytes of a templates
      * @throws IllegalArgumentException if template found by key
      */
-    public byte[] getTemplateByKey(String key) {
-        byte[] templateBytes = getTenantTemplates().get(key);
+    public String getTemplateByKey(String key) {
+        String templateBytes = getTenantTemplates().get(key);
         if (templateBytes == null) {
             throw new IllegalArgumentException("Template not found for key: " + key);
         }
@@ -82,28 +77,16 @@ public class CarboneTemplateHolder implements RefreshableConfiguration {
         } else {
             tenantCarboneTemplateMap.compute(tenant, (t, templates) -> {
                 templates = templates == null ? new HashMap<>() : templates;
-                templates.put(docKey, compileCarboneTemplate(key, config));
+                templates.put(docKey, config);
                 return templates;
             });
             log.info("Template '{}' for tenant {} was updated", docKey, tenant);
         }
     }
 
-    private byte[] compileCarboneTemplate(String key, String config) {
-        List<String> binaryFileTypes = applicationProperties.getBinaryFileTypes();
-
-        byte[] compiledTemplate = config.getBytes(UTF_8);
-
-        if (binaryFileTypes.stream().anyMatch(key::endsWith)) {
-            compiledTemplate = Base64.getDecoder().decode(config);
-        }
-
-        return  compiledTemplate;
-    }
-
-    private Map<String, byte[]> getTenantTemplates() {
+    private Map<String, String> getTenantTemplates() {
         String tenantKeyValue = getTenantKeyValue();
-        Map<String, byte[]> templates = tenantCarboneTemplateMap.get(tenantKeyValue);
+        Map<String, String> templates = tenantCarboneTemplateMap.get(tenantKeyValue);
         if (MapUtils.isEmpty(templates)) {
             return Collections.emptyMap();
         }

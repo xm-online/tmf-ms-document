@@ -16,7 +16,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-public class TenantProperties {
+public class TenantConfigDocumentProperties {
 
     @JsonProperty("renderer")
     private Renderer renderer = new Renderer();

@@ -161,10 +161,6 @@ xm-config:
     kafka-config-topic: config_topic
 
 application:
-
-    tenant-properties-path-pattern: /config/tenants/{tenantName}/document/${application.tenant-properties-name}
-    tenant-properties-name: document.yml
-
     timelinesEnabled: true
     kafka-enabled: true
     kafka-system-topic: system_topic
