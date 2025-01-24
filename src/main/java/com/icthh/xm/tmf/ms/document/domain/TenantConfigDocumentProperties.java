@@ -34,9 +34,6 @@ public class TenantConfigDocumentProperties {
         @ToString
         public static class Carbone {
 
-            @JsonProperty("apiVersion")
-            private String apiVersion;
-
             @JsonProperty("url")
             private String url;
 
