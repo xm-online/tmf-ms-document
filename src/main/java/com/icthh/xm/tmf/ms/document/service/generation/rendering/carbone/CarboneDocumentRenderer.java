@@ -6,6 +6,8 @@ import com.icthh.xm.tmf.ms.document.domain.TenantConfigDocumentProperties;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRenderer;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRendererType;
+import com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto.AddRenderTemplateRequest;
+import com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto.AddRenderTemplateResponse;
 import com.icthh.xm.tmf.ms.document.service.generation.rendering.exception.DocumentRenderingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNullElse;
 import static org.springframework.util.CollectionUtils.toMultiValueMap;
 
 @Slf4j
@@ -52,10 +55,10 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
         String baseUrl = tenantProperties.getRenderer().getCarbone().getUrl();
         HttpHeaders headers = mapCarboneHeaders(tenantProperties.getRenderer().getCarbone().getHeaders());
 
-        Map<String, Object> requestBody = mapRenderRequestBody(key, mediaType, data, template);
+        AddRenderTemplateRequest requestBody = mapRenderRequestBody(key, mediaType, data, template);
         AddRenderTemplateResponse renderResponse = callAddRender(baseUrl, requestBody, headers);
 
-        return callGetDocument(baseUrl, renderResponse.data.renderId, headers);
+        return callGetDocument(baseUrl, renderResponse.getData().getRenderId(), headers);
     }
 
     @Override
@@ -64,7 +67,7 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
     }
 
     private TenantConfigDocumentProperties resolveTenantProperties() {
-        var properties = tenantConfigService.getConfig().get(TENANT_CONFIG_KEY);
+        Object properties = tenantConfigService.getConfig().get(TENANT_CONFIG_KEY);
         return objectMapper.convertValue(properties, TenantConfigDocumentProperties.class);
     }
 
@@ -79,31 +82,25 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
         return new HttpHeaders(toMultiValueMap(collect));
     }
 
-    private Map<String, Object> mapRenderRequestBody(String key,
-                                                     MediaType mediaType,
-                                                     Object data,
-                                                     String template) {
-        Map<String, Object> requestData = toMap(data);
-        requestData.putIfAbsent("reportName", key);
-        requestData.putIfAbsent("convertTo", mediaType.getSubtype());
-        requestData.putIfAbsent("timezone", TimeZone.getDefault().toZoneId().getId());
-        requestData.put("template", template);
-        return requestData;
-    }
+    private AddRenderTemplateRequest mapRenderRequestBody(String key,
+                                                          MediaType mediaType,
+                                                          Object data,
+                                                          String template) {
+        var request = objectMapper.convertValue(data, AddRenderTemplateRequest.class);
 
-    @SuppressWarnings("unchecked")
-    private Map<String, Object> toMap(Object data) {
-        if (data instanceof Map) {
-            return (Map<String, Object>) data;
-        }
-        throw new IllegalArgumentException("Unexpected document data type: " + data.getClass());
+        request.setReportName(requireNonNullElse(request.getConvertTo(), key));
+        request.setConvertTo(requireNonNullElse(request.getConvertTo(), mediaType.getSubtype()));
+        request.setTimezone(requireNonNullElse(request.getConvertTo(), TimeZone.getDefault().toZoneId().getId()));
+
+        request.setTemplate(template);
+        return request;
     }
 
     private AddRenderTemplateResponse callAddRender(String baseUrl,
-                                                    Map<String, Object> requestBody,
+                                                    AddRenderTemplateRequest requestBody,
                                                     HttpHeaders headers) {
-        var url = collectUrl(baseUrl, URL_PATH_SEGMENT_RENDER, URL_PATH_SEGMENT_TEMPLATE);
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+        String url = collectUrl(baseUrl, URL_PATH_SEGMENT_RENDER, URL_PATH_SEGMENT_TEMPLATE);
+        HttpEntity<AddRenderTemplateRequest> request = new HttpEntity<>(requestBody, headers);
         return vanillaRestTemplate.exchange(url, HttpMethod.POST, request, AddRenderTemplateResponse.class).getBody();
     }
 

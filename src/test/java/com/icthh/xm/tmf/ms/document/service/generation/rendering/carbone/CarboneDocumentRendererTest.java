@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icthh.xm.commons.config.client.service.TenantConfigService;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationUtils;
+import com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto.AddRenderTemplateRequest;
+import com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto.AddRenderTemplateResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -52,7 +54,7 @@ public class CarboneDocumentRendererTest {
     private String templateFileConfigKey;
 
     @Captor
-    private ArgumentCaptor<HttpEntity<Map<String, Object>>> request;
+    private ArgumentCaptor<HttpEntity<AddRenderTemplateRequest>> request;
 
 
     @Before
@@ -97,8 +99,8 @@ public class CarboneDocumentRendererTest {
             eq(AddRenderTemplateResponse.class));
 
         assertThat(request.getValue().getBody()).isNotNull();
-        assertThat(request.getValue().getBody().get("template")).isNotNull();
-        assertThat(request.getValue().getBody().get("convertTo")).isEqualTo("pdf");
+        assertThat(request.getValue().getBody().getTemplate()).isNotNull();
+        assertThat(request.getValue().getBody().getConvertTo()).isEqualTo("pdf");
         assertThat(request.getValue().getHeaders()).isNotNull();
         assertThat(request.getValue().getHeaders().containsKey("carbone-version")).isTrue();
         assertThat(request.getValue().getHeaders().get("carbone-version")).isEqualTo(List.of("4"));

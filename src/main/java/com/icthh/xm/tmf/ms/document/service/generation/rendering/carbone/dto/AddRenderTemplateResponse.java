@@ -1,4 +1,4 @@
-package com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone;
+package com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,13 +7,13 @@ import lombok.Setter;
 @Setter
 public class AddRenderTemplateResponse {
 
-    boolean success;
+    private boolean success;
 
-    AddRenderTemplateResponseData data;
+    private AddRenderTemplateResponseData data;
 
     @Getter
     @Setter
     public static class AddRenderTemplateResponseData {
-        String renderId;
+        private String renderId;
     }
 }
