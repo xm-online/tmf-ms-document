@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static org.springframework.util.CollectionUtils.toMultiValueMap;
@@ -51,7 +52,7 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
         String baseUrl = tenantProperties.getRenderer().getCarbone().getUrl();
         HttpHeaders headers = mapCarboneHeaders(tenantProperties.getRenderer().getCarbone().getHeaders());
 
-        Map<String, Object> requestBody = mapRenderRequestBody(data, template);
+        Map<String, Object> requestBody = mapRenderRequestBody(key, mediaType, data, template);
         AddRenderTemplateResponse renderResponse = callAddRender(baseUrl, requestBody, headers);
 
         return callGetDocument(baseUrl, renderResponse.data.renderId, headers);
@@ -78,8 +79,14 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
         return new HttpHeaders(toMultiValueMap(collect));
     }
 
-    private Map<String, Object> mapRenderRequestBody(Object data, String template) {
+    private Map<String, Object> mapRenderRequestBody(String key,
+                                                     MediaType mediaType,
+                                                     Object data,
+                                                     String template) {
         Map<String, Object> requestData = toMap(data);
+        requestData.putIfAbsent("reportName", key);
+        requestData.putIfAbsent("convertTo", mediaType.getSubtype());
+        requestData.putIfAbsent("timezone", TimeZone.getDefault().toZoneId().getId());
         requestData.put("template", template);
         return requestData;
     }

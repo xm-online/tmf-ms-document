@@ -98,6 +98,7 @@ public class CarboneDocumentRendererTest {
 
         assertThat(request.getValue().getBody()).isNotNull();
         assertThat(request.getValue().getBody().get("template")).isNotNull();
+        assertThat(request.getValue().getBody().get("convertTo")).isEqualTo("pdf");
         assertThat(request.getValue().getHeaders()).isNotNull();
         assertThat(request.getValue().getHeaders().containsKey("carbone-version")).isTrue();
         assertThat(request.getValue().getHeaders().get("carbone-version")).isEqualTo(List.of("4"));

@@ -5,6 +5,7 @@ import static com.icthh.xm.tmf.ms.document.config.Constants.APPLICATION_DOCX;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import static org.springframework.http.MediaType.APPLICATION_PDF;
 import static org.springframework.http.MediaType.APPLICATION_XML;
+import static org.springframework.http.MediaType.IMAGE_PNG;
 import static org.springframework.http.MediaType.TEXT_XML;
 
 import java.util.Set;
@@ -17,7 +18,7 @@ import org.springframework.http.MediaType;
 public enum DocumentRendererType {
     JASPER_REPORTS(of(APPLICATION_PDF, TEXT_XML, APPLICATION_XML, APPLICATION_OCTET_STREAM, APPLICATION_DOCX)),
 
-    CARBONE(of(APPLICATION_PDF));
+    CARBONE(of(APPLICATION_PDF, IMAGE_PNG));
 
     private final Set<MediaType> supportedMimeTypes;
 }
