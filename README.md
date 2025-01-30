@@ -286,3 +286,10 @@ To set up carbon based renderer do the following:
    You can create and edit [template](https://carbone.io/documentation.html#building-a-template) using LibreOffice, Microsoft Word, or Google Docs.
 
     or use [Carbon Studio](https://studio.carbone.io/#/studio)
+
+
+ATTENTION: carbon renderer will work with ms-config version=>2.1.16
+also environment variable APPLICATION_BINARY_FILE_TYPES should be set for ms-config.
+Example:
+
+    APPLICATION_BINARY_FILE_TYPES = .docx,.odt
