@@ -3,6 +3,7 @@ package com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icthh.xm.commons.config.client.service.TenantConfigService;
+import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationUtils;
 import com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto.AddRenderTemplateRequest;
 import com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto.AddRenderTemplateResponse;
@@ -42,6 +43,7 @@ public class CarboneDocumentRendererTest {
     private static final String KEY = "TEST_DOCUMENT_CARBONE";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ApplicationProperties applicationProperties = new ApplicationProperties();
 
     private CarboneTemplateHolder templateHolder;
     private TenantConfigService tenantConfigService;
@@ -62,11 +64,14 @@ public class CarboneDocumentRendererTest {
         MockitoAnnotations.initMocks(this);
 
         data = readJsonData();
+        fillApplicationProperties();
 
         templateHolder = spy(new CarboneTemplateHolder(mockTenantContextHolder("TEST")));
         tenantConfigService = mock(TenantConfigService.class);
         restTemplate = mock(RestTemplate.class);
-        renderer = new CarboneDocumentRenderer(templateHolder, tenantConfigService, restTemplate);
+        restTemplate = mock(RestTemplate.class);
+
+        renderer = new CarboneDocumentRenderer(templateHolder, tenantConfigService, restTemplate, applicationProperties);
         mediaType = MediaType.APPLICATION_PDF;
 
         templateFileConfigKey = buildTemplateFileConfigKey(KEY);
@@ -151,4 +156,8 @@ public class CarboneDocumentRendererTest {
         return renderResponse;
     }
 
+    private void fillApplicationProperties() {
+        applicationProperties.getCarbone().setApiVersionKey("carbone-version");
+        applicationProperties.getCarbone().setApiVersionValue("4");
+    }
 }

@@ -2,6 +2,7 @@ package com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icthh.xm.commons.config.client.service.TenantConfigService;
+import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
 import com.icthh.xm.tmf.ms.document.domain.TenantConfigDocumentProperties;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentRenderer;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -41,6 +43,7 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
     private final CarboneTemplateHolder templateHolder;
     private final TenantConfigService tenantConfigService;
     private final RestTemplate vanillaRestTemplate;
+    private final ApplicationProperties applicationProperties;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -72,14 +75,21 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
     }
 
     private HttpHeaders mapCarboneHeaders(Map<String, String> headers) {
-        if (headers == null) {
-            return new HttpHeaders();
-        }
+        headers = enrichWithDefaultCarboneHeaders(headers);
 
         Map<String, List<String>> collect = headers.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, v -> Arrays.asList(v.getValue().split(", "))));
 
         return new HttpHeaders(toMultiValueMap(collect));
+    }
+
+    private Map<String, String> enrichWithDefaultCarboneHeaders(Map<String, String> headers) {
+        headers = requireNonNullElse(headers, new HashMap<>());
+        headers.putIfAbsent(
+            applicationProperties.getCarbone().getApiVersionKey(),
+            applicationProperties.getCarbone().getApiVersionValue()
+        );
+        return headers;
     }
 
     private AddRenderTemplateRequest mapRenderRequestBody(String key,
