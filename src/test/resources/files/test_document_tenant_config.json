@@ -1,0 +1,12 @@
+{
+    "document": {
+        "renderer": {
+            "carbone": {
+                "url": "http://carbone:4000",
+                "headers": {
+                    "carbone-version": "4"
+                }
+            }
+        }
+    }
+}

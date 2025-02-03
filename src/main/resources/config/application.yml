@@ -181,3 +181,8 @@ application:
     document-generation:
         specification-path-pattern: /config/tenants/{tenantName}/document/documents.yml
         jasper-templates-path-pattern: /config/tenants/{tenantName}/document/templates/jasper/{filename}.jrxml
+        carbone-templates-path-pattern: /config/tenants/{tenantName}/document/templates/carbone/{filename}.*
+
+    carbone:
+        api-version-key: carbone-version
+        api-version-value: 4

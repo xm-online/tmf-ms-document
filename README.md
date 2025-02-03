@@ -254,3 +254,42 @@ For other fonts you need to explicitly add them to classpath of the application:
 2. Export them as `.jar` via [Jaspersoft Studio](https://community.jaspersoft.com/documentation/tibco-jaspersoft-studio-user-guide/v640/working-font-extensions).
 3. Add jar file to classpath of the application.
 4. Now you can use them in your documents.
+
+### How to generate documents with [Carbon](https://carbone.io/documentation.html)
+Carbone allow to build reports templates using LibreOffice, Microsoft Word, or Google Docs.
+Carbone could be used as cloud solution ([pricing](https://carbone.io/pricing.html)) or as on-premise installation.
+
+On-premise installation is free to use (Community Edition). "Community Edition" features free of charge and without limits. Please note that advanced functions will not work.
+
+[Community vs Enterprise](https://carbone.io/documentation.html#supported-files-and-features-list)
+
+[Official docker](https://hub.docker.com/r/carbone/carbone-ee)
+
+
+To set up carbon based renderer do the following:
+1. Describe document specification in the documents YAML file with `renderer: CARBONE`
+2. Add tenant specific configuration into `tenant-config.yml`
+
+    ```yml    
+   renderer:
+     carbone:
+       url: "http://carbone:4000"
+       headers:
+        Authorization: "Bearer YOUR_API_TOKEN"
+    ```
+    Where:
+    * url - address of carbone installation (https://api.carbone.io in case of using cloud)
+    * headers.Authorization - optional parameter, used for cloud version ([more info](https://carbone.io/documentation/developer/http-api/introduction.html#authentication))
+
+3. Add your template file to `templates/carbone` with document specification key in lower case as a filename (e.g. key = _TEST_DOCUMENT_ - file = _test_document.docx_).
+
+   You can create and edit [template](https://carbone.io/documentation.html#building-a-template) using LibreOffice, Microsoft Word, or Google Docs.
+
+    or use [Carbon Studio](https://studio.carbone.io/#/studio)
+
+
+ATTENTION: carbon renderer will work with ms-config version=>2.1.16
+also environment variable APPLICATION_BINARY_FILE_TYPES should be set for ms-config.
+Example:
+
+    APPLICATION_BINARY_FILE_TYPES = .docx,.odt

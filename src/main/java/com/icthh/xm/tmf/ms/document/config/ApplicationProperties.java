@@ -30,6 +30,8 @@ public class ApplicationProperties {
     private List<String> tenantIgnoredPathList = Collections.emptyList();
     private final DocumentGeneration documentGeneration = new DocumentGeneration();
 
+    private Carbone carbone = new Carbone();
+
     @Getter
     @Setter
     public static class Lep {
@@ -50,6 +52,14 @@ public class ApplicationProperties {
     public static class DocumentGeneration {
         private String specificationPathPattern;
         private String jasperTemplatesPathPattern;
+        private String carboneTemplatesPathPattern;
+    }
+
+    @Getter
+    @Setter
+    public static class Carbone {
+        private String apiVersionKey;
+        private String apiVersionValue;
     }
 
 }

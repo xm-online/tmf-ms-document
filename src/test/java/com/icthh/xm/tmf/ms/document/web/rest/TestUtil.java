@@ -12,6 +12,8 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Base64;
+
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -150,6 +152,15 @@ public final class TestUtil {
         try {
             InputStream specFileInputStream = new ClassPathResource(resourceFilePath).getInputStream();
             return IOUtils.toString(specFileInputStream, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public static String resourceFileAsBase64String(String resourceFilePath) {
+        try {
+            InputStream specFileInputStream = new ClassPathResource(resourceFilePath).getInputStream();
+            return Base64.getEncoder().encodeToString(IOUtils.toByteArray(specFileInputStream));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
