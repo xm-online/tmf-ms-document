@@ -3,11 +3,15 @@
 
 <configuration>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="com.icthh.xm.commons.logging.aop.SecurityMaskingConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] [${springAppName:-}] [%X{traceId:-}]  %logger{15} - %msg%n%rEx</pattern>
             <immediateFlush>false</immediateFlush>
         </encoder>
+
+        <keywords>${LOGBACK_SECURITY_MASKING_KEYWORDS: }</keywords>
+        <replacementMessage>${LOGBACK_SECURITY_MASKING_REPLACEMENT_MESSAGE:this log was removed due to potential security breach}</replacementMessage>
+
     </appender>
 
     <!-- Uncomment for logging ALL HTTP request and responses -->
@@ -22,3 +26,4 @@
     </root>
 
 </configuration>
+
