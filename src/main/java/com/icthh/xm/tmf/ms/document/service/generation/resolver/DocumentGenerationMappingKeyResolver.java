@@ -1,21 +1,23 @@
 package com.icthh.xm.tmf.ms.document.service.generation.resolver;
 
-import com.icthh.xm.commons.lep.AppendLepKeyResolver;
-import com.icthh.xm.lep.api.LepManagerService;
+import com.icthh.xm.lep.api.LepKeyResolver;
 import com.icthh.xm.lep.api.LepMethod;
-import com.icthh.xm.lep.api.commons.SeparatorSegmentedLepKey;
+import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DocumentGenerationMappingKeyResolver extends AppendLepKeyResolver {
+public class DocumentGenerationMappingKeyResolver implements LepKeyResolver {
 
     @Override
-    protected String[] getAppendSegments(SeparatorSegmentedLepKey baseKey, LepMethod method,
-        LepManagerService managerService) {
-        String key = getRequiredStrParam(method, "key");
-        String translatedKey = translateToLepConvention(key);
-        return new String[] {
-            translatedKey.toUpperCase()
-        };
+    public List<String> segments(LepMethod method) {
+        String key = method.getParameter("key", String.class);
+        Objects.requireNonNull(key, "LEP method required parameter 'key' is null");
+        return List.of(translateToLepConvention(key));
+    }
+
+    private static String translateToLepConvention(String key) {
+        Objects.requireNonNull(key, "Document type can't be null");
+        return key.replace("-", "_").replace(".", "$");
     }
 }

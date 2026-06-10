@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.icthh.xm.commons.config.client.repository.TenantConfigRepository;
 import com.icthh.xm.commons.config.client.repository.TenantListRepository;
+import com.icthh.xm.commons.config.client.service.TenantAliasService;
 import com.icthh.xm.commons.config.client.service.TenantConfigService;
 import java.util.Collections;
 import java.util.Set;
