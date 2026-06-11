@@ -13,11 +13,6 @@ public class DocumentGenerationMappingKeyResolver implements LepKeyResolver {
     public List<String> segments(LepMethod method) {
         String key = method.getParameter("key", String.class);
         Objects.requireNonNull(key, "LEP method required parameter 'key' is null");
-        return List.of(translateToLepConvention(key));
-    }
-
-    private static String translateToLepConvention(String key) {
-        Objects.requireNonNull(key, "Document type can't be null");
-        return key.replace("-", "_").replace(".", "$");
+        return List.of(key);
     }
 }

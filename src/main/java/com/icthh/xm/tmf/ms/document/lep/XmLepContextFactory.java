@@ -5,6 +5,7 @@ import com.icthh.xm.commons.lep.api.LepContextFactory;
 import com.icthh.xm.commons.permission.service.PermissionCheckService;
 import com.icthh.xm.lep.api.LepMethod;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,14 +14,17 @@ public class XmLepContextFactory implements LepContextFactory {
 
     private final TenantConfigService tenantConfigService;
     private final RestTemplate restTemplate;
+    private final JdbcTemplate jdbcTemplate;
     private final PermissionCheckService permissionCheckService;
 
     public XmLepContextFactory(
             TenantConfigService tenantConfigService,
             @Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate,
+           JdbcTemplate jdbcTemplate,
             PermissionCheckService permissionCheckService) {
         this.tenantConfigService = tenantConfigService;
         this.restTemplate = restTemplate;
+        this.jdbcTemplate = jdbcTemplate;
         this.permissionCheckService = permissionCheckService;
     }
 
@@ -35,6 +39,7 @@ public class XmLepContextFactory implements LepContextFactory {
 
         LepContext.Templates templates = new LepContext.Templates();
         templates.rest = restTemplate;
+        templates.jdbc = jdbcTemplate;
         lepContext.templates = templates;
 
         return lepContext;

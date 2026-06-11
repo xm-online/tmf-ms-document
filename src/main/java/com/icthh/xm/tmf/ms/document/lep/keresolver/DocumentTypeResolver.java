@@ -16,11 +16,7 @@ public class DocumentTypeResolver implements LepKeyResolver {
     public List<String> segments(LepMethod method) {
         DocumentCreate documentCreate = method.getParameter(DOCUMENT_CREATE, DocumentCreate.class);
         Objects.requireNonNull(documentCreate, "LEP method required parameter 'document' is null");
-        return List.of(translateToLepConvention(documentCreate.getType()));
+        return List.of(documentCreate.getType());
     }
 
-    private static String translateToLepConvention(String key) {
-        Objects.requireNonNull(key, "Document type can't be null");
-        return key.replace("-", "_").replace(".", "$");
-    }
 }
