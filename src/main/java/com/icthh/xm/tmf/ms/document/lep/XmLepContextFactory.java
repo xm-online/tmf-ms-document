@@ -4,6 +4,7 @@ import com.icthh.xm.commons.config.client.service.TenantConfigService;
 import com.icthh.xm.commons.lep.api.LepContextFactory;
 import com.icthh.xm.commons.permission.service.PermissionCheckService;
 import com.icthh.xm.lep.api.LepMethod;
+import com.icthh.xm.tmf.ms.document.service.metrics.MetricsAdapter;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,18 +18,19 @@ public class XmLepContextFactory implements LepContextFactory {
     private final RestTemplate restTemplate;
     private final JdbcTemplate jdbcTemplate;
     private final PermissionCheckService permissionCheckService;
-    private final MeterRegistry meterRegistry;
+    private final MetricsAdapter metricsAdapter;
 
-    public XmLepContextFactory(TenantConfigService tenantConfigService,
-                               @Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate,
-                               JdbcTemplate jdbcTemplate,
-                               PermissionCheckService permissionCheckService,
-                               MeterRegistry meterRegistry) {
+    public XmLepContextFactory(
+            TenantConfigService tenantConfigService,
+            @Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate,
+            JdbcTemplate jdbcTemplate,
+            PermissionCheckService permissionCheckService,
+            MetricsAdapter metricsAdapter) {
         this.tenantConfigService = tenantConfigService;
         this.restTemplate = restTemplate;
         this.jdbcTemplate = jdbcTemplate;
         this.permissionCheckService = permissionCheckService;
-        this.meterRegistry = meterRegistry;
+        this.metricsAdapter = metricsAdapter;
     }
 
     @Override
@@ -38,13 +40,13 @@ public class XmLepContextFactory implements LepContextFactory {
         LepContext.Services services = new LepContext.Services();
         services.tenantConfigService = tenantConfigService;
         services.permissionService = permissionCheckService;
+        services.metricsAdapter = metricsAdapter;
         lepContext.services = services;
 
         LepContext.Templates templates = new LepContext.Templates();
         templates.rest = restTemplate;
         templates.jdbc = jdbcTemplate;
         lepContext.templates = templates;
-        lepContext.meterRegistry = meterRegistry;
 
         return lepContext;
     }
