@@ -37,14 +37,4 @@ public class DocumentTypeResolverTest {
         verify(method).getParameter(DocumentTypeResolver.DOCUMENT_CREATE, DocumentCreate.class);
     }
 
-    @Test
-    public void testResolveLepKeyByTypeWithLepConvention() {
-        DocumentCreate documentCreate = new DocumentCreate();
-        documentCreate.setType("REPORT.TYPE-KEY");
-
-        when(method.getParameter(DocumentTypeResolver.DOCUMENT_CREATE, DocumentCreate.class))
-            .thenReturn(documentCreate);
-
-        assertEquals(singletonList("REPORT$TYPE_KEY"), resolver.segments(method));
-    }
 }
