@@ -7,24 +7,22 @@ apply plugin: 'org.openapi.generator'
 openApiGenerate {
     generatorName = "spring"
     inputSpec = "$rootDir/src/main/resources/swagger/api.yml".toString()
-    outputDir = "$buildDir/openapi".toString()
+    outputDir = layout.buildDirectory.dir("openapi").get().asFile.toString()
     apiPackage = "com.icthh.xm.tmf.ms.document.web.api"
     modelPackage = "com.icthh.xm.tmf.ms.document.web.api.model"
     apiFilesConstrainedTo = [""]
     modelFilesConstrainedTo = [""]
     supportingFilesConstrainedTo = ["ApiUtil.java"]
-    configOptions = [delegatePattern: "true"]
+    configOptions = [delegatePattern: "true", useSpringBoot3: "true", useJakartaEe: "true"]
     validateSpec = true
 }
-
-task allOpenApiGenerate(dependsOn: ['openApiGenerate'])
 
 sourceSets {
     main {
         java {
-            srcDir file("${project.buildDir.path}/openapi/src/main/java")
+            srcDir file(layout.buildDirectory.dir("openapi/src/main/java").get().asFile)
         }
     }
 }
 
-compileJava.dependsOn("allOpenApiGenerate")
+compileJava.dependsOn("openApiGenerate")
