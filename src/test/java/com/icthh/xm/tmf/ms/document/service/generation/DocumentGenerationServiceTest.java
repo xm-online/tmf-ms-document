@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
@@ -17,15 +18,15 @@ import com.icthh.xm.tmf.ms.document.web.rest.errors.InternalServerErrorException
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DocumentGenerationServiceTest {
 
     private DocumentGenerationContextMappingService mappingService;
@@ -44,7 +45,7 @@ public class DocumentGenerationServiceTest {
     private byte[] renderedDocumentBytes;
     private String specFileConfigKey;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         initTestData();
         mockDependencies();
@@ -120,7 +121,8 @@ public class DocumentGenerationServiceTest {
 
     private DocumentRenderingService mockRenderingService() {
         DocumentRenderingService renderingService = mock(DocumentRenderingService.class);
-        doReturn(renderedDocumentBytes).when(renderingService).render(eq(key), any(), any(), any());
+        // happy-path stub shared by all tests; the failure-path tests never reach rendering
+        lenient().doReturn(renderedDocumentBytes).when(renderingService).render(eq(key), any(), any(), any());
         return renderingService;
     }
 

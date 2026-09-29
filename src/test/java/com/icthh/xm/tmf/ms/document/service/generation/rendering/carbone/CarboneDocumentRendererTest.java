@@ -7,8 +7,8 @@ import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationUtils;
 import com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto.AddRenderTemplateRequest;
 import com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone.dto.AddRenderTemplateResponse;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
@@ -59,9 +59,9 @@ public class CarboneDocumentRendererTest {
     private ArgumentCaptor<HttpEntity<AddRenderTemplateRequest>> request;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         data = readJsonData();
         fillApplicationProperties();
@@ -107,7 +107,7 @@ public class CarboneDocumentRendererTest {
         assertThat(request.getValue().getBody().getTemplate()).isNotNull();
         assertThat(request.getValue().getBody().getConvertTo()).isEqualTo("pdf");
         assertThat(request.getValue().getHeaders()).isNotNull();
-        assertThat(request.getValue().getHeaders().containsKey("carbone-version")).isTrue();
+        assertThat(request.getValue().getHeaders().containsHeader("carbone-version")).isTrue();
         assertThat(request.getValue().getHeaders().get("carbone-version")).isEqualTo(List.of("4"));
     }
 

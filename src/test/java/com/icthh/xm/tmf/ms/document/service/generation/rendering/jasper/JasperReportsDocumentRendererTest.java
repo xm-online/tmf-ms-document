@@ -18,8 +18,8 @@ import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.Su
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationUtils;
 import java.util.List;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -34,7 +34,7 @@ public class JasperReportsDocumentRendererTest {
     private MediaType mediaType;
     private String templateFileConfigKey;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         key = "TEST_DOCUMENT";
         data = readJsonData();
