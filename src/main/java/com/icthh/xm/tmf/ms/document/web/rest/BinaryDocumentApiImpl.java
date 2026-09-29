@@ -3,7 +3,6 @@ package com.icthh.xm.tmf.ms.document.web.rest;
 import static com.icthh.xm.tmf.ms.document.web.rest.util.HeaderUtil.createAttachmentHeaders;
 import static com.icthh.xm.tmf.ms.document.web.rest.util.MediaTypeUtil.parseMediaType;
 
-import com.codahale.metrics.annotation.Timed;
 import com.icthh.xm.commons.lep.LogicExtensionPoint;
 import com.icthh.xm.commons.lep.spring.LepService;
 import com.icthh.xm.commons.permission.annotation.PrivilegeDescription;
@@ -26,7 +25,6 @@ public class BinaryDocumentApiImpl implements BinaryDocumentApiDelegate {
     private final DocumentGenerationService documentGenerationService;
 
     @PreAuthorize("hasPermission({}, 'DOCUMENT.RETRIEVE.BINARY')")
-    @Timed
     @LogicExtensionPoint("RetrieveBinary")
     @Override
     @PrivilegeDescription("Privilege to retrieve binary document")
@@ -35,7 +33,6 @@ public class BinaryDocumentApiImpl implements BinaryDocumentApiDelegate {
     }
 
     @PreAuthorize("hasPermission({'documentGenerate': #documentGenerate}, 'DOCUMENT.GENERATE.BINARY')")
-    @Timed
     @Override
     @PrivilegeDescription("Privilege to generate binary document")
     public ResponseEntity<Resource> generateBinaryDocument(DocumentGenerate documentGenerate) {

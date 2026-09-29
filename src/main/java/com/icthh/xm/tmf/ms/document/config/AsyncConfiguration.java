@@ -1,7 +1,7 @@
 package com.icthh.xm.tmf.ms.document.config;
 
-import io.github.jhipster.async.ExceptionHandlingAsyncTaskExecutor;
-import io.github.jhipster.config.JHipsterProperties;
+import tech.jhipster.async.ExceptionHandlingAsyncTaskExecutor;
+import tech.jhipster.config.JHipsterProperties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -32,7 +32,7 @@ public class AsyncConfiguration implements AsyncConfigurer, SchedulingConfigurer
     private final JHipsterProperties jHipsterProperties;
 
     @Override
-    @Bean(name = "taskExecutor")
+    @Bean(name = "applicationTaskExecutor")
     public TaskExecutor getAsyncExecutor() {
         log.debug("Creating Async Task Executor");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

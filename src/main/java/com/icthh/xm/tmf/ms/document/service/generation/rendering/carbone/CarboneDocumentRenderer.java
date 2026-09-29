@@ -1,6 +1,7 @@
 package com.icthh.xm.tmf.ms.document.service.generation.rendering.carbone;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.icthh.xm.commons.config.client.service.TenantConfigService;
 import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
 import com.icthh.xm.tmf.ms.document.domain.TenantConfigDocumentProperties;
@@ -45,7 +46,7 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
     private final RestTemplate vanillaRestTemplate;
     private final ApplicationProperties applicationProperties;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = JsonMapper.builder().build();
 
     @Override
     public byte[] render(String key,
@@ -121,7 +122,7 @@ public class CarboneDocumentRenderer implements DocumentRenderer {
     }
 
     private String collectUrl(String baseUrl, String... pathSegments) {
-        return UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment(pathSegments).toUriString();
+        return UriComponentsBuilder.fromUriString(baseUrl).pathSegment(pathSegments).toUriString();
     }
 
 }

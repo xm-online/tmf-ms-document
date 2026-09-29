@@ -1,7 +1,7 @@
 package com.icthh.xm.tmf.ms.document.service.generation.util;
 
 import com.google.common.base.Joiner;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import lombok.experimental.UtilityClass;
 
 @SuppressWarnings("unused")
