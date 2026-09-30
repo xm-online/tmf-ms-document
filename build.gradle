@@ -215,7 +215,6 @@ ext["tomcat.version"] = tomcatVersion
 ext["jackson-bom.version"] = jacksonVersion
 ext["jackson-2-bom.version"] = jackson2Version
 ext["thymeleaf.version"] = thymeleafVersion
-ext["logback.version"] = logbackVersion
 ext["postgresql.version"] = postgresqlVersion
 
 dependencyManagement {
