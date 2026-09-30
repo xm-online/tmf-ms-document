@@ -214,7 +214,6 @@ repositories {
 ext["tomcat.version"] = tomcatVersion
 ext["jackson-bom.version"] = jacksonVersion
 ext["jackson-2-bom.version"] = jackson2Version
-ext["opentelemetry.version"] = opentelemetryVersion
 ext["thymeleaf.version"] = thymeleafVersion
 ext["logback.version"] = logbackVersion
 ext["postgresql.version"] = postgresqlVersion
@@ -314,17 +313,22 @@ dependencies {
         exclude group: "com.vaadin.external.google", module: "android-json"
     }
 
-    implementation("net.sf.barcode4j:barcode4j:${barcode4j_version}") {
-        // command-line only dependency (drags commons-lang 1.0 and junit 3.7 into the runtime)
-        exclude group: "commons-cli", module: "commons-cli"
-    }
+    implementation "net.sf.barcode4j:barcode4j:${barcode4j_version}"
     implementation "com.google.zxing:core:${zxing_version}"
     implementation "org.apache.xmlgraphics:batik-bridge:${apache_batik_version}"
+    // batik 1.19 no longer depends on xalan: keep it on the classpath (fixed version) for LEP scripts and templates
+    implementation "xalan:xalan"
+    implementation "xalan:serializer"
 
-    implementation "net.sf.jasperreports:jasperreports:${jasperreports_version}"
+    implementation("net.sf.jasperreports:jasperreports:${jasperreports_version}") {
+        // itext 2.1.7.js9 pulls bcprov-jdk15on 1.68; bcprov-jdk18on (same org.bouncycastle packages) is used instead
+        exclude group: "org.bouncycastle", module: "bcprov-jdk15on"
+    }
+    implementation "org.bouncycastle:bcprov-jdk18on"
     implementation "net.sf.jasperreports:jasperreports-fonts:${jasperreports_version}"
 
     implementation "org.apache.xmlbeans:xmlbeans:${xmlbeans_version}"
+    implementation "org.apache.poi:poi-ooxml-schemas:${poi_version}"
     implementation "org.apache.poi:poi-ooxml:${poi_version}"
     implementation "org.apache.poi:poi:${poi_version}"
 
