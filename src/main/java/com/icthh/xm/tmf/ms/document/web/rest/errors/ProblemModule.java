@@ -1,5 +1,6 @@
 package com.icthh.xm.tmf.ms.document.web.rest.errors;
 
+import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Problem;
 import org.zalando.problem.StatusType;
 import org.zalando.problem.violations.ConstraintViolationProblem;
@@ -10,7 +11,12 @@ import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ValueSerializer;
 import tools.jackson.databind.module.SimpleModule;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URI;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,11 +62,55 @@ public class ProblemModule extends SimpleModule {
         }
     }
 
+    /**
+     * The Jackson 2 zalando module serialized problems as beans, so properties exposed by a problem subclass
+     * (e.g. {@code entityName} and {@code errorKey} of {@code BadRequestAlertException}) were part of the body.
+     * Written first, in field declaration order, as the old module did.
+     */
+    private static void writeSubclassProperties(Problem problem, JsonGenerator gen) {
+        Deque<Class<?>> hierarchy = new ArrayDeque<>();
+        for (Class<?> type = problem.getClass();
+             type != null && type != AbstractThrowableProblem.class && type != Throwable.class;
+             type = type.getSuperclass()) {
+            hierarchy.push(type);
+        }
+        for (Class<?> type : hierarchy) {
+            for (Field field : type.getDeclaredFields()) {
+                if (Modifier.isStatic(field.getModifiers()) || RESERVED_FIELDS.contains(field.getName())
+                    || problem.getParameters().containsKey(field.getName())) {
+                    continue;
+                }
+                Method getter = findGetter(type, field.getName());
+                if (getter != null) {
+                    try {
+                        gen.writePOJOProperty(field.getName(), getter.invoke(problem));
+                    } catch (ReflectiveOperationException e) {
+                        throw new IllegalStateException("Cannot read problem property " + field.getName(), e);
+                    }
+                }
+            }
+        }
+    }
+
+    private static Method findGetter(Class<?> type, String name) {
+        String suffix = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+        for (String prefix : new String[]{"get", "is"}) {
+            try {
+                Method method = type.getMethod(prefix + suffix);
+                return Modifier.isPublic(method.getModifiers()) ? method : null;
+            } catch (NoSuchMethodException ignored) {
+                // try the next prefix
+            }
+        }
+        return null;
+    }
+
     static class ProblemSerializer extends ValueSerializer<Problem> {
 
         @Override
         public void serialize(Problem problem, JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
             gen.writeStartObject();
+            writeSubclassProperties(problem, gen);
             writeProblemFields(problem, gen);
             for (Map.Entry<String, Object> entry : problem.getParameters().entrySet()) {
                 if (!RESERVED_FIELDS.contains(entry.getKey())) {

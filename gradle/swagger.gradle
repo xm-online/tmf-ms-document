@@ -13,7 +13,9 @@ openApiGenerate {
     apiFilesConstrainedTo = [""]
     modelFilesConstrainedTo = [""]
     supportingFilesConstrainedTo = ["ApiUtil.java"]
-    configOptions = [delegatePattern: "true", useSpringBoot3: "true", useJakartaEe: "true"]
+    configOptions = [delegatePattern: "true", useSpringBoot3: "true", useJakartaEe: "true",
+                     // generator 7 initializes collections with an empty list; keep null as the 4.x generator did
+                     containerDefaultToNull: "true"]
     validateSpec = true
 }
 

@@ -46,6 +46,26 @@ public class ProblemModuleIntTest extends AbstractSpringBootTest {
     }
 
     @Test
+    public void problemSubclassPropertiesAreKeptLikeBeforeMigration() {
+        JsonNode json = jsonMapper.readTree(jsonMapper.writeValueAsString(
+            new BadRequestAlertException("Bad thing", "document", "badthing")));
+
+        // same field order as the Jackson 2 zalando module wrote it
+        assertThat(json.propertyNames()).containsExactly("entityName", "errorKey", "type", "title", "status",
+            "message", "params");
+        assertThat(json.get("entityName").asString()).isEqualTo("document");
+        assertThat(json.get("errorKey").asString()).isEqualTo("badthing");
+        assertThat(json.get("message").asString()).isEqualTo("error.badthing");
+    }
+
+    @Test
+    public void fieldErrorKeepsPropertyOrder() {
+        JsonNode json = jsonMapper.readTree(jsonMapper.writeValueAsString(new FieldErrorVM("dto", "field", "NotNull")));
+
+        assertThat(json.propertyNames()).containsExactly("objectName", "field", "message");
+    }
+
+    @Test
     public void constraintViolationProblemContainsViolations() {
         ConstraintViolationProblem problem = new ConstraintViolationProblem(Status.BAD_REQUEST,
             List.of(new Violation("field", "must not be null")));

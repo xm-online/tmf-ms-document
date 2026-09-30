@@ -49,6 +49,10 @@ management:
             process: true
             system: true
 spring:
+    jackson:
+        mapper:
+            # Jackson 3 sorts properties alphabetically by default; keep the declaration order responses had before
+            sort-properties-alphabetically: false
     application:
         name: document
     main:
