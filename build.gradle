@@ -210,9 +210,41 @@ repositories {
     }
 }
 
+// Security overrides of Spring Boot managed versions (Veracode SCA)
+ext["tomcat.version"] = tomcatVersion
+ext["jackson-bom.version"] = jacksonVersion
+ext["jackson-2-bom.version"] = jackson2Version
+ext["opentelemetry.version"] = opentelemetryVersion
+ext["thymeleaf.version"] = thymeleafVersion
+ext["logback.version"] = logbackVersion
+ext["postgresql.version"] = postgresqlVersion
+
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+    // Security overrides of transitive versions (Veracode SCA)
+    dependencies {
+        dependencySet(group: "org.bouncycastle", version: bouncycastleVersion) {
+            entry "bcprov-jdk18on"
+            entry "bcpkix-jdk18on"
+            entry "bcutil-jdk18on"
+        }
+        dependencySet(group: "org.apache.ant", version: antVersion) {
+            entry "ant"
+            entry "ant-launcher"
+            entry "ant-antlr"
+            entry "ant-junit"
+        }
+        dependencySet(group: "xalan", version: xalanVersion) {
+            entry "xalan"
+            entry "serializer"
+        }
+        dependency "com.github.luben:zstd-jni:${zstdJniVersion}"
+        dependency "at.yawk.lz4:lz4-java:${lz4JavaVersion}"
+        dependency "org.springframework.retry:spring-retry:${springRetryVersion}"
+        dependency "org.apache.commons:commons-compress:${commonsCompressVersion}"
+        dependency "commons-beanutils:commons-beanutils:${commonsBeanutilsVersion}"
     }
 }
 
@@ -282,7 +314,10 @@ dependencies {
         exclude group: "com.vaadin.external.google", module: "android-json"
     }
 
-    implementation "net.sf.barcode4j:barcode4j:${barcode4j_version}"
+    implementation("net.sf.barcode4j:barcode4j:${barcode4j_version}") {
+        // command-line only dependency (drags commons-lang 1.0 and junit 3.7 into the runtime)
+        exclude group: "commons-cli", module: "commons-cli"
+    }
     implementation "com.google.zxing:core:${zxing_version}"
     implementation "org.apache.xmlgraphics:batik-bridge:${apache_batik_version}"
 
@@ -290,7 +325,6 @@ dependencies {
     implementation "net.sf.jasperreports:jasperreports-fonts:${jasperreports_version}"
 
     implementation "org.apache.xmlbeans:xmlbeans:${xmlbeans_version}"
-    implementation "org.apache.poi:poi-ooxml-schemas:${poi_version}"
     implementation "org.apache.poi:poi-ooxml:${poi_version}"
     implementation "org.apache.poi:poi:${poi_version}"
 
