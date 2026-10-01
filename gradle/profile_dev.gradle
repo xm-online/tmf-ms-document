@@ -7,7 +7,7 @@ configurations {
 
 dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools"
-    implementation "com.h2database:h2"
+    developmentOnly "org.springframework.boot:spring-boot-docker-compose"
 }
 
 def profiles = "dev"
@@ -28,6 +28,8 @@ springBoot {
 
 bootRun {
     args = []
+    systemProperty 'user.timezone', 'UTC'
+    environment 'POSTGRES_PORT', '0'
 }
 
 

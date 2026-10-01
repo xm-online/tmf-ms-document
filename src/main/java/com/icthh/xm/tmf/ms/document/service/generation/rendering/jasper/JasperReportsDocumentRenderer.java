@@ -1,7 +1,7 @@
 package com.icthh.xm.tmf.ms.document.service.generation.rendering.jasper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 import com.icthh.xm.tmf.ms.document.config.ApplicationProperties;
 import com.icthh.xm.tmf.ms.document.helper.ExportDocumentHelper;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
@@ -80,8 +80,8 @@ public class JasperReportsDocumentRenderer implements DocumentRenderer {
 
     private JsonDataSource asJsonDataSource(Object data) {
         try {
-            return new JsonDataSource(new ByteArrayInputStream(new ObjectMapper().writeValueAsBytes(data)));
-        } catch (JRException | JsonProcessingException e) {
+            return new JsonDataSource(new ByteArrayInputStream(JsonMapper.builder().build().writeValueAsBytes(data)));
+        } catch (JRException | JacksonException e) {
             throw new DocumentRenderingException("Failed to parse document data as JSON. " + e.getMessage(), e);
         }
     }

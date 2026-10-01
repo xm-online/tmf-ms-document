@@ -3,7 +3,7 @@ package com.icthh.xm.tmf.ms.document.service.generation;
 import static com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationUtils.buildDocumentFilename;
 
 import com.icthh.xm.tmf.ms.document.web.rest.errors.InternalServerErrorException;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;

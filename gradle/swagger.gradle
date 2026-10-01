@@ -7,24 +7,27 @@ apply plugin: 'org.openapi.generator'
 openApiGenerate {
     generatorName = "spring"
     inputSpec = "$rootDir/src/main/resources/swagger/api.yml".toString()
-    outputDir = "$buildDir/openapi".toString()
+    outputDir = layout.buildDirectory.dir("openapi").get().asFile.toString()
     apiPackage = "com.icthh.xm.tmf.ms.document.web.api"
     modelPackage = "com.icthh.xm.tmf.ms.document.web.api.model"
     apiFilesConstrainedTo = [""]
     modelFilesConstrainedTo = [""]
     supportingFilesConstrainedTo = ["ApiUtil.java"]
-    configOptions = [delegatePattern: "true"]
+    configOptions = [delegatePattern: "true", useSpringBoot3: "true", useJakartaEe: "true",
+                     // generator 7 initializes collections with an empty list; keep null as the 4.x generator did
+                     containerDefaultToNull: "true",
+                     // Jackson 3 deserializes through a required-args constructor: absent fields became null
+                     // instead of the model defaults. The 4.x generator had no such constructor
+                     generatedConstructorWithRequiredArgs: "false"]
     validateSpec = true
 }
-
-task allOpenApiGenerate(dependsOn: ['openApiGenerate'])
 
 sourceSets {
     main {
         java {
-            srcDir file("${project.buildDir.path}/openapi/src/main/java")
+            srcDir file(layout.buildDirectory.dir("openapi/src/main/java").get().asFile)
         }
     }
 }
 
-compileJava.dependsOn("allOpenApiGenerate")
+compileJava.dependsOn("openApiGenerate")

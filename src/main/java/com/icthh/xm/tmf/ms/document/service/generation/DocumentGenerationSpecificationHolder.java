@@ -1,15 +1,10 @@
 package com.icthh.xm.tmf.ms.document.service.generation;
 
-import static com.fasterxml.jackson.databind.type.TypeFactory.defaultInstance;
 import static com.icthh.xm.tmf.ms.document.config.Constants.TENANT_NAME;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.icthh.xm.commons.config.client.api.RefreshableConfiguration;
 import com.icthh.xm.commons.tenant.TenantContextHolder;
 import com.icthh.xm.commons.tenant.TenantContextUtils;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.type.MapType;
+import tools.jackson.databind.type.TypeFactory;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 /**
  * Holder of specifications for document generation.
@@ -38,7 +38,7 @@ public class DocumentGenerationSpecificationHolder implements RefreshableConfigu
 
     private final Map<String, Map<String, DocumentGenerationSpec>> tenantSpecificationMap = new ConcurrentHashMap<>();
 
-    private final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+    private final ObjectMapper objectMapper = YAMLMapper.builder().build();
     private final AntPathMatcher matcher = new AntPathMatcher();
 
     /**
@@ -77,12 +77,13 @@ public class DocumentGenerationSpecificationHolder implements RefreshableConfigu
     }
 
     private Map<String, DocumentGenerationSpec> yamlConfigToSpecMap(String key, String config) {
-        MapType type = defaultInstance().constructMapType(HashMap.class,
-            defaultInstance().constructType(String.class),
-            defaultInstance().constructType(DocumentGenerationSpec.class));
+        TypeFactory typeFactory = objectMapper.getTypeFactory();
+        MapType type = typeFactory.constructMapType(HashMap.class,
+            typeFactory.constructType(String.class),
+            typeFactory.constructType(DocumentGenerationSpec.class));
         try {
             return objectMapper.readValue(config, type);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             log.error("Failed to read document generation specification from YAML config file: {}",
                 key, e);
         }

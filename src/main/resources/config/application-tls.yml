@@ -13,6 +13,5 @@ server:
         key-store-password: password
         key-store-type: PKCS12
         key-alias: selfsigned
-jhipster:
-    http:
-        version: V_2_0
+    http2:
+        enabled: true

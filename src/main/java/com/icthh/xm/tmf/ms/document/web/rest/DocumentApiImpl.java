@@ -1,6 +1,5 @@
 package com.icthh.xm.tmf.ms.document.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.icthh.xm.commons.lep.LogicExtensionPoint;
 import com.icthh.xm.commons.lep.spring.LepService;
 import com.icthh.xm.commons.permission.annotation.PrivilegeDescription;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DocumentApiImpl implements DocumentApiDelegate {
 
-    @Timed
     @LogicExtensionPoint(value = "CreateDocument", resolver = DocumentTypeResolver.class)
     @PreAuthorize("hasPermission({type: #document.type}, 'DOCUMENT.ACTION.CREATE')")
     @PrivilegeDescription("Create document")

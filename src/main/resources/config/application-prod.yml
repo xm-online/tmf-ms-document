@@ -17,7 +17,7 @@ logging:
     level:
         ROOT: INFO
         com.icthh.xm.tmf.ms.document: INFO
-        io.github.jhipster: INFO
+        tech.jhipster: INFO
 
 spring:
     kafka:
@@ -41,11 +41,9 @@ spring:
         hikari:
             auto-commit: false
     jpa:
-        database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
         database: POSTGRESQL
         show-sql: false
         properties:
-            hibernate.id.new_generator_mappings: true
             hibernate.connection.provider_disables_autocommit: true
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
@@ -59,15 +57,6 @@ spring:
         password:
     thymeleaf:
         cache: true
-    sleuth:
-        sampler:
-            probability: 1 # report 100% of traces
-    zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
-        base-url: http://localhost:9411
-        enabled: false
-        locator:
-            discovery:
-                enabled: true
 
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
@@ -116,15 +105,12 @@ jhipster:
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: document@localhost
         base-url: http://my-server-url-to-change # Modify according to your server's URL
-    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        logs: # Reports Dropwizard metrics in the logs
-            enabled: false
     logging:
         logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
             enabled: false
             host: localhost
             port: 5000
-            queue-size: 512
+            ring-buffer-size: 512
 oauth2:
     signature-verification:
         public-key-endpoint-uri: http://config/api/token_key

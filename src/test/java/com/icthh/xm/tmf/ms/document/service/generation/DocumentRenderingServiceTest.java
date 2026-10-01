@@ -12,8 +12,8 @@ import static org.mockito.Mockito.spy;
 import java.util.Collections;
 import java.util.List;
 import com.icthh.xm.tmf.ms.document.service.generation.DocumentGenerationSpec.SubDocument;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 public class DocumentRenderingServiceTest {
@@ -30,7 +30,7 @@ public class DocumentRenderingServiceTest {
     private byte[] renderedDocumentBytes = new byte[5];
     private String key;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         key = "TEST_DOCUMENT";
         mediaType = MediaType.APPLICATION_PDF;
