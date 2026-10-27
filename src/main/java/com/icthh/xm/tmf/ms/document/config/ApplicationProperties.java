@@ -1,5 +1,6 @@
 package com.icthh.xm.tmf.ms.document.config;
 
+import com.icthh.xm.commons.config.XmCommonsApplicationProperties;
 import com.icthh.xm.commons.lep.TenantScriptStorage;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +17,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
-public class ApplicationProperties {
+public class ApplicationProperties extends XmCommonsApplicationProperties {
 
     private boolean kafkaEnabled;
     private String kafkaSystemTopic;
@@ -31,14 +32,6 @@ public class ApplicationProperties {
     private final DocumentGeneration documentGeneration = new DocumentGeneration();
 
     private Carbone carbone = new Carbone();
-
-    private String configPrivateKey;
-    private final ApiDocs apiDocs = new ApiDocs();
-    private final Prometheus prometheus = new Prometheus();
-    private final Management management = new Management();
-    private final TenantCache tenantCache = new TenantCache();
-    private final TenantMemoryCache tenantMemoryCache = new TenantMemoryCache();
-    private final XmAutoConfigurationFilter xmAutoConfigurationFilter = new XmAutoConfigurationFilter();
 
     @Getter
     @Setter
@@ -68,72 +61,5 @@ public class ApplicationProperties {
     public static class Carbone {
         private String apiVersionKey;
         private String apiVersionValue;
-    }
-
-    @Getter
-    @Setter
-    public static class ApiDocs {
-        private boolean privilegeCheck;
-    }
-
-    public static class Prometheus {
-        private boolean publicAccess;
-
-        public boolean isPublic() {
-            return publicAccess;
-        }
-
-        public void setPublic(boolean publicAccess) {
-            this.publicAccess = publicAccess;
-        }
-    }
-
-    @Getter
-    @Setter
-    public static class TenantCache {
-        private String enabled;
-    }
-
-    @Getter
-    @Setter
-    public static class TenantMemoryCache {
-        private String enabled;
-    }
-
-    @Getter
-    @Setter
-    public static class XmAutoConfigurationFilter {
-        private boolean disabled;
-    }
-
-    @Getter
-    public static class Management {
-        private final Access access = new Access();
-        private final Info info = new Info();
-        private final Logs logs = new Logs();
-
-        @Getter
-        @Setter
-        public static class Access {
-            private String role;
-        }
-
-        public static class Info {
-            private boolean publicAccess;
-
-            public boolean isPublic() {
-                return publicAccess;
-            }
-
-            public void setPublic(boolean publicAccess) {
-                this.publicAccess = publicAccess;
-            }
-        }
-
-        @Getter
-        @Setter
-        public static class Logs {
-            private boolean systemAdminOnly;
-        }
     }
 }
