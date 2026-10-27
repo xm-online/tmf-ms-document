@@ -31,6 +31,7 @@ logging:
 spring:
     kafka:
         bootstrap-servers: localhost:9092
+        # Kafka connection by environment variables, PLAINTEXT when not set: https://github.com/xm-online/xm-ms-template/blob/main/README.md#kafka-connection
     devtools:
         restart:
             enabled: true
