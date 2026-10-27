@@ -150,7 +150,7 @@ application:
     kafka-enabled: true
     kafka-system-topic: system_topic
     kafka-system-queue: system_queue
-    tenant-ignored-path-list: /swagger-resources/configuration/ui, /management/health, /management/health/liveness, /management/health/readiness, /oauth/token_key, /v3/api-docs
+    tenant-ignored-path-list: /swagger-resources/configuration/ui, /management/health, /management/health/liveness, /management/health/readiness, /oauth/token_key, /v3/api-docs, /error
     retryThreadCount: 3
     db-schema-suffix:
 
