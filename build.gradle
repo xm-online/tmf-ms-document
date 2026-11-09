@@ -215,6 +215,7 @@ repositories {
 ext["tomcat.version"] = tomcatVersion
 ext["jackson-bom.version"] = jacksonVersion
 ext["jackson-2-bom.version"] = jackson2Version
+ext["opentelemetry.version"] = opentelemetryVersion
 ext["thymeleaf.version"] = thymeleafVersion
 ext["postgresql.version"] = postgresqlVersion
 
